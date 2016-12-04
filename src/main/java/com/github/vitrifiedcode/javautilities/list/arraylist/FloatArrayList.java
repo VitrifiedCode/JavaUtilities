@@ -1,5 +1,6 @@
-package com.github.vitrifiedcode.javautilities.list;
+package com.github.vitrifiedcode.javautilities.list.arraylist;
 
+import com.github.vitrifiedcode.javautilities.list.AbstractPrimitiveList;
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 
 public class FloatArrayList extends AbstractPrimitiveList<Float>
@@ -49,7 +50,7 @@ public class FloatArrayList extends AbstractPrimitiveList<Float>
 
     protected void ensureSize(int size, int index)
     {
-        if(size < 0 || size > MAX_SIZE) { throw new IndexOutOfBoundsException(StringUtil.build("Cannot expand array to size that is larger than ", MAX_SIZE, " or less than 0, the value ", size, "was passed to `com.github.vitrifiedcode.javautilities.list.FloatArrayList#ensureSize(int)`")); }
+        if(size < 0 || size > MAX_SIZE) { throw new IndexOutOfBoundsException(StringUtil.build("Cannot expand array to size that is larger than ", MAX_SIZE, " or less than 0, the value ", size, "was passed to `com.github.vitrifiedcode.javautilities.list.arraylist.FloatArrayList#ensureSize(int)`")); }
         if(elementData.length >= size) { return; }
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
     }

@@ -1,5 +1,8 @@
-package com.github.vitrifiedcode.javautilities.list;
+package com.github.vitrifiedcode.javautilities.list.vector;
 
+import com.github.vitrifiedcode.javautilities.list.arraylist.BooleanArrayList;
+
+@Deprecated
 public class BooleanVector extends BooleanArrayList
 {
     @Override

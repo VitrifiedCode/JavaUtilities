@@ -1,5 +1,6 @@
-package com.github.vitrifiedcode.javautilities.list;
+package com.github.vitrifiedcode.javautilities.list.arraylist;
 
+import com.github.vitrifiedcode.javautilities.list.AbstractPrimitiveList;
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 
 public class CharArrayList extends AbstractPrimitiveList<Character>

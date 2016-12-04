@@ -3,10 +3,34 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
 
+# System files
+## Mac OSX
+*.DS_Store
+## Windows
+Thumbs.db
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+*.hprof
+
+# Eclipse
+settings/
+bin/
+*.project
+*.classpath
+
+# Intellij IDEA
+.idea/
+*.ipr*
+*.iws*
+*.iml*
+build/
+
+# Gradle
+.gradle/
+
