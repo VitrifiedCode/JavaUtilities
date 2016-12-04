@@ -1,4 +1,4 @@
-package com.github.vitrifiedcode.javautilities;
+package com.github.vitrifiedcode.javautilities.array;
 
 import org.jetbrains.annotations.NotNull;
 
