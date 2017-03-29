@@ -25,6 +25,14 @@ public class Quad<L, ML, MR, R>
         this.right = right;
     }
 
+    public Quad(Quad<L, ML, MR, R> other)
+    {
+        left = other.left;
+        middleL = other.middleL;
+        middleR = other.middleR;
+        right = other.right;
+    }
+
     @Override
     public int hashCode()
     {
@@ -50,6 +58,9 @@ public class Quad<L, ML, MR, R>
 
         return false;
     }
+
+    @Override
+    public Quad<L, ML, MR, R> clone() { return new Quad<L, ML, MR, R>(this); }
 
     @NotNull
     @Override

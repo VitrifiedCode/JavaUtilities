@@ -19,6 +19,12 @@ public class Pair<L, R>
         this.right = right;
     }
 
+    public Pair(Pair<L, R> other)
+    {
+        left = other.left;
+        right = other.right;
+    }
+
     @Override
     public int hashCode()
     {
@@ -40,6 +46,9 @@ public class Pair<L, R>
 
         return false;
     }
+
+    @Override
+    public Pair<L, R> clone() { return new Pair<L, R>(this); }
 
     @NotNull
     @Override

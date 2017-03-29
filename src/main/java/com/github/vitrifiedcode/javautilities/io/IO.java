@@ -1,7 +1,10 @@
 package com.github.vitrifiedcode.javautilities.io;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -104,6 +107,63 @@ public final class IO
     }
 
     public static BigDecimal nextBigDecimal() { return INPUT.nextBigDecimal(); }
+
+    public static BufferedReader newBufReader(InputStream is) { return new BufferedReader(new InputStreamReader(is)); }
+
+    public static BufferedWriter newBufWriter(OutputStream os) { return new BufferedWriter(new OutputStreamWriter(os)); }
+
+    public static List<List<String>> readFile(InputStream is)
+    {
+        List<List<String>> out = new ArrayList<List<String>>();
+        try
+        {
+            BufferedReader reader = newBufReader(is);
+            String line;
+            int counter = 0;
+            List<String> tmp = new ArrayList<>();
+            while((line = reader.readLine()) != null)
+            {
+                if(++counter % 1_000_000_000 == 0)
+                {
+                    counter = 0;
+                    out.add(tmp);
+                    tmp = new ArrayList<>();
+                }
+
+                tmp.add(line);
+            }
+            if(counter != 0)
+            {
+                out.add(tmp);
+            }
+        }
+        catch(IOException e) { e.printStackTrace(); }
+
+        return out;
+    }
+
+    public static List<byte[]> readBinaryFile(InputStream is)
+    {
+        List<byte[]> out = new ArrayList<byte[]>();
+
+        final int size = 1_000_000;
+
+        try
+        {
+            while(is.available() > 0)
+            {
+                byte[] arr = new byte[size];
+                int total = is.read(arr);
+                if(total < size)
+                {
+                    System.arraycopy(arr, 0, arr, 0, total);
+                }
+
+                out.add(arr);
+            }
+        }catch(Exception e) { e.printStackTrace(); }
+        return out;
+    }
 
     static
     {

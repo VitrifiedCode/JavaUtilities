@@ -22,6 +22,13 @@ public class Tuple<L, M, R>
         this.right = right;
     }
 
+    public Tuple(Tuple<L, M, R> other)
+    {
+        left = other.left;
+        middle = other.middle;
+        right = other.right;
+    }
+
     @Override
     public int hashCode()
     {
@@ -45,6 +52,9 @@ public class Tuple<L, M, R>
 
         return false;
     }
+
+    @Override
+    public Tuple<L, M, R> clone() { return new Tuple<L, M, R>(this); }
 
     @NotNull
     @Override

@@ -12,16 +12,16 @@ public final class ResourceUtil
 {
     private ResourceUtil() {}
 
-    public static String assemblePath(String... in) { return StringUtil.build(false, Properties.OS.PATH_SEPERATOR, in); }
+    public static String assemblePath(String... in) { return StringUtil.buildDelim(false, Properties.OS.FILE_SEPERATOR, in); }
 
     public static InputStream getResource(String resource) throws IOException
     {
         if(Properties.JAVA.IS_JAR) { return IO.class.getResourceAsStream(resource); }
         else
         {
-            File f = new File(Properties.OS.USER_DIR + assemblePath("/src", "main", "resources", resource));
-            if(!f.exists()) { f = new File(Properties.OS.USER_DIR + assemblePath("/src", "test", "resources", resource)); }
-            if(!f.exists()) { f = new File(Properties.OS.USER_DIR + assemblePath("/res", resource)); }
+            File f = new File(assemblePath(Properties.OS.USER_DIR, "src", "main", "resources", resource));
+            if(!f.exists()) { f = new File(assemblePath(Properties.OS.USER_DIR, "src", "test", "resources", resource)); }
+            if(!f.exists()) { f = new File(assemblePath(Properties.OS.USER_DIR, "res", resource)); }
             return new FileInputStream(f);
         }
     }

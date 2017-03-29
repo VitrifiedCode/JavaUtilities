@@ -1,14 +1,19 @@
 package com.github.vitrifiedcode.javautilities.math;
 
+import com.github.vitrifiedcode.javautilities.reflection.ReflectionUtil;
+
+import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.UUID;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "UnnecessaryBoxing" })
 public final class MathUtil
 {
+
+
     private MathUtil() {}
 
-    public static final Random RANDOM = new Random();
+
     public static final double PHI = 1.618033989;
 
     public static final double ROOT_2 = 1.414213562D;
@@ -34,10 +39,76 @@ public final class MathUtil
     private static final double[] ASINE_TAB;
     private static final double[] COS_TAB;
 
+    static
+    {
+        for(int i = 0; i < 65536; ++i) { SIN_TABLE[i] = (float) Math.sin(((double) i) * Math.PI * 2.0D / 65536.0D); }
+
+        SIN_TABLE[0] = 0;
+        SIN_TABLE[16384] = 1;
+        SIN_TABLE[32768] = 0;
+        SIN_TABLE[49152] = 1;
+
+        MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[] { 0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9 };
+        FRAC_BIAS = Double.longBitsToDouble(4805340802404319232L);
+        ASINE_TAB = new double[257];
+        COS_TAB = new double[257];
+
+        for(int i = 0; i < 257; ++i)
+        {
+            double d0 = ((double) i) / 256.0D;
+            double d1 = Math.asin(d0);
+            COS_TAB[i] = Math.cos(d1);
+            ASINE_TAB[i] = d1;
+        }
+    }
+
+    //region Degrees & Radions
+    public static double DEG2RAD = Math.PI / 180.0D;
+    public static double RAD2DEG = 180.0D / Math.PI;
+    public static double DEG2RAD_NP = 1.0D / 180.0D;
+    public static double RAD2DEG_NP = 180.0D;
+
+    public static double deg2rad(final double in) { return in * DEG2RAD; }
+
+    public static double rad2deg(final double in) { return in * RAD2DEG; }
+
+    public static double deg2radNP(final double in) { return in * DEG2RAD_NP; }
+
+    public static double rad2degNP(final double in) { return in * RAD2DEG_NP; }
+    //endregion
+
+    //region Random
+    public static final Random RANDOM = new Random();
+
+    public static void updateRandom()
+    {
+        try
+        {
+            Field rand = ReflectionUtil.getField(MathUtil.class, "RANDOM");
+            ReflectionUtil.setFinal(rand, false);
+            rand.set(null, new Random());
+            ReflectionUtil.setFinal(rand, false);
+        }
+        catch(IllegalAccessException | NoSuchFieldException ignored) {}
+    }
+
+    public static void updateRandom(final long seed)
+    {
+        try
+        {
+            Field rand = ReflectionUtil.getField(MathUtil.class, "RANDOM");
+            ReflectionUtil.setFinal(rand, false);
+            rand.set(null, new Random(seed));
+            ReflectionUtil.setFinal(rand, false);
+        }
+        catch(IllegalAccessException | NoSuchFieldException ignored) {}
+    }
+    //endregion
+
     /**
      * sin looked up in a table
      */
-    public static float sin(float value)
+    public static float sin(final float value)
     {
         return SIN_TABLE[(int) (value * 10430.378F) & 65535];
     }
@@ -54,17 +125,11 @@ public final class MathUtil
 
     public static double approachLinear(double a, double b, double max) { return a > b ? a - b < max ? b : a - max : b - a < max ? b : a + max; }
 
-    public static float interpolate(float a, float b, float d) { return a + (b - a) * d; }
+    public static float interpolate(float a, float b, float d) { return (float) approachExp(a, b, d); }
 
-    public static double interpolate(double a, double b, double d)
-    {
-        return a + (b - a) * d;
-    }
+    public static double interpolate(double a, double b, double d) { return approachExp(a, b, d); }
 
-    public static double approachExp(double a, double b, double ratio)
-    {
-        return a + (b - a) * ratio;
-    }
+    public static double approachExp(double a, double b, double ratio) { return a + (b - a) * ratio; }
 
     public static double approachExp(double a, double b, double ratio, double cap)
     {
@@ -80,12 +145,7 @@ public final class MathUtil
         return a + Math.signum(b - a) * d;
     }
 
-    public static double clip(double value, double min, double max)
-    {
-        if(value > max) { value = max; }
-        else if(value < min) { value = min; }
-        return value;
-    }
+    public static double clip(double value, double min, double max) { return value > max ? max : (value < min ? min : value); }
 
     public static boolean between(double a, double x, double b)
     {
@@ -139,7 +199,7 @@ public final class MathUtil
     }
 
     /**
-     * returns par0 cast as an int, and no greater than Integer.MAX_VALUE-1024
+     * returns value cast as an int, and no greater than Integer.MAX_VALUE-1024
      */
     public static int fastFloor(double value) { return ((int) (value + 1024.0D)) - 1024; }
 
@@ -225,103 +285,7 @@ public final class MathUtil
 
     public static boolean getBit(long mask, int bit) { return (mask & 1 << bit) != 0; }
 
-    /**
-     * Allows for the calculate of rootX(in), may have minor performance boost from using direct call to StrictMath lowering stack overhead.
-     *
-     * @param base The base of the root.
-     * @param in   The value to find the root of.
-     * @return The rootX(in)
-     */
-    public static double root(double base, double in) { return StrictMath.sqrt(in) / StrictMath.sqrt(base); }
-
-    /**
-     * Use the predefined square root instead of a custom implementation.
-     *
-     * @param in The value to find the root of.
-     * @return The root2(in)
-     */
-    public static double root2(double in) { return StrictMath.sqrt(in); }
-
-    /**
-     * Use the predefined cube root instead of a custom implementation.
-     *
-     * @param in The value to find the root of.
-     * @return The root3(in)
-     */
-    public static double root3(double in) { return StrictMath.cbrt(in); }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root4(in)
-     */
-    public static double root4(double in) { return StrictMath.sqrt(in) / 2.0D; }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root5(in)
-     */
-    public static double root5(double in) { return StrictMath.sqrt(in) / 2.236067978D; }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root6(in)
-     */
-    public static double root6(double in) { return StrictMath.sqrt(in) / 2.449489743D; }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root7(in)
-     */
-    public static double root7(double in) { return StrictMath.sqrt(in) / 2.645751311D; }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root8(in)
-     */
-    public static double root8(double in) { return StrictMath.sqrt(in) / 2.828427125D; }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root9(in)
-     */
-    public static double root9(double in) { return StrictMath.sqrt(in) / 3.0D; }
-
-    /**
-     * Use pre calculated math for optimization.
-     *
-     * @param in The value to find the root of.
-     * @return The root10(in)
-     */
-    public static double root10(double in) { return StrictMath.sqrt(in) / 3.16227766D; }
-
-    /**
-     * Because why not.
-     *
-     * @param in The value to find the root of.
-     * @return The rootPi(in)
-     */
-    public static double rootPi(double in) { return StrictMath.sqrt(in) / 1.772453851D; }
-
-    /**
-     * Because why not.
-     *
-     * @param in The value to find the root of.
-     * @return The roote(in)
-     */
-    public static double roote(double in) { return StrictMath.sqrt(in) / 1.648721271D; }
-
+    //region Logarithmic Functions
 
     /**
      * Allows for the calculate of logX(in), may have minor performance boost from using direct call to StrictMath lowering stack overhead.
@@ -338,7 +302,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log2(in)
      */
-    public static double log2(double in) { return StrictMath.log(in); }
+    public static double log2(double in) { return StrictMath.log(in) / 0.6931471806D; }
 
     /**
      * Use the predefined cube log instead of a custom implementation.
@@ -419,6 +383,53 @@ public final class MathUtil
      * @return The ln(in)
      */
     public static double loge(double in) { return StrictMath.log(in); }
+
+    /**
+     * Calculates the natural logarithm (base e).
+     *
+     * @param in The value to find the log of.
+     * @return The ln(in)
+     */
+    public static double ln(double in) { return StrictMath.log(in); }
+    //endregion
+
+    //region Exponentiation Functions
+    public static double pow2(double x) { return x * x; }
+
+    public static double pow3(double x) { return x * x * x; }
+
+    public static double pow4(double x) { return x * x * x * x; }
+
+    public static double pow5(double x) { return x * x * x * x * x; }
+
+    public static double pow6(double x) { return x * x * x * x * x * x; }
+
+    public static double pow7(double x) { return x * x * x * x * x * x * x; }
+
+    public static double pow8(double x) { return x * x * x * x * x * x * x * x; }
+
+    public static double pow9(double x) { return x * x * x * x * x * x * x * x * x; }
+
+    public static double pow10(double x) { return x * x * x * x * x * x * x * x * x * x; }
+
+    public static float pow2f(float x) { return x * x; }
+
+    public static float pow3f(float x) { return x * x * x; }
+
+    public static float pow4f(float x) { return x * x * x * x; }
+
+    public static float pow5f(float x) { return x * x * x * x * x; }
+
+    public static float pow6f(float x) { return x * x * x * x * x * x; }
+
+    public static float pow7f(float x) { return x * x * x * x * x * x * x; }
+
+    public static float pow8f(float x) { return x * x * x * x * x * x * x * x; }
+
+    public static float pow9f(float x) { return x * x * x * x * x * x * x * x * x; }
+
+    public static float pow10f(float x) { return x * x * x * x * x * x * x * x * x * x; }
+    //endregion
 
     /**
      * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
@@ -549,7 +560,7 @@ public final class MathUtil
     /**
      * Is the given value a power of two?  (1, 2, 4, 8, 16, ...)
      */
-    private static boolean isPowerOfTwo(int value) { return value != 0 && (value & value - 1) == 0; }
+    public static boolean isPowerOfTwo(int value) { return value != 0 && (value & value - 1) == 0; }
 
     /**
      * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
@@ -752,21 +763,9 @@ public final class MathUtil
 
     public static int hash(int value) { return (((((value >>> 16) * -2048144789) >>> 13) * -1028477387) >>> 16); }
 
-    static
-    {
-        for(int i = 0; i < 65536; ++i) { SIN_TABLE[i] = (float) Math.sin(((double) i) * Math.PI * 2.0D / 65536.0D); }
+    public static int barrelShiftL(int var, int shift) { return shift == 0 ? var : (var << shift) | (var >> (32 - shift)); }
 
-        MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[] { 0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9 };
-        FRAC_BIAS = Double.longBitsToDouble(4805340802404319232L);
-        ASINE_TAB = new double[257];
-        COS_TAB = new double[257];
+    public static int barrelShiftR(int var, int shift) { return shift == 0 ? var : (var >> shift) | (var << (32 - shift)); }
 
-        for(int i = 0; i < 257; ++i)
-        {
-            double d0 = ((double) i) / 256.0D;
-            double d1 = Math.asin(d0);
-            COS_TAB[i] = Math.cos(d1);
-            ASINE_TAB[i] = d1;
-        }
-    }
+    public static int barrelShiftRU(int var, int shift) { return shift == 0 ? var : (var >>> shift) | (var << (32 - shift)); }
 }
