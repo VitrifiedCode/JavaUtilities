@@ -8,7 +8,7 @@ public final class MathUtil
     private MathUtil() {}
 
 
-    public static final double PHI = 1.618033989;
+    public static final double PHI = 1.618033989D;
 
     public static final double ROOT_2 = 1.414213562D;
     public static final double ROOT_3 = 1.732050808D;
@@ -57,10 +57,10 @@ public final class MathUtil
     }
 
     //region Degrees & Radions
-    public static double DEG2RAD = Math.PI / 180.0D;
-    public static double RAD2DEG = 180.0D / Math.PI;
-    public static double DEG2RAD_NP = 1.0D / 180.0D;
-    public static double RAD2DEG_NP = 180.0D;
+    public static final double DEG2RAD = Math.PI / 180.0D;
+    public static final double RAD2DEG = 180.0D / Math.PI;
+    public static final double DEG2RAD_NP = 1.0D / 180.0D;
+    public static final double RAD2DEG_NP = 180.0D;
 
     public static double deg2rad(final double in) { return in * DEG2RAD; }
 
@@ -427,32 +427,46 @@ public final class MathUtil
 
     public static double nextDouble(Random random, double minimum, double maximum) { return minimum >= maximum ? minimum : random.nextDouble() * (maximum - minimum) + minimum; }
 
-    public static <T extends Number> double average(T[] values)
+    public static <T extends Number> double averageT(T... values)
     {
         double i = 0.0D;
         for(T j : values) { i += j.doubleValue(); }
         return i / (double) values.length;
     }
 
-    public static float average(float[] values)
+    public static float average(float... values)
     {
         double i = 0.0D;
         for(float j : values) { i += (double) j; }
         return (float) (i / (double) values.length);
     }
 
-    public static float average(byte[] values)
+    public static float average(byte... values)
     {
         long i = 0L;
         for(byte j : values) { i += (long) j; }
         return ((float) i) / (float) values.length;
     }
 
-    public static byte averageI(byte[] values)
+    public static byte averageI(byte... values)
     {
         long i = 0L;
         for(byte j : values) { i += (long) j; }
         return (byte) (i / (long) values.length);
+    }
+
+    public static float average(int... values)
+    {
+        long i = 0L;
+        for(int j : values) { i += (long) j; }
+        return ((float) i) / (float) values.length;
+    }
+
+    public static int averageI(int... values)
+    {
+        long i = 0L;
+        for(int j : values) { i += (long) j; }
+        return (int) (i / (long) values.length);
     }
 
     public static boolean epsilonEquals(float x, float y) { return Math.abs(y - x) < 1.0E-5F; }

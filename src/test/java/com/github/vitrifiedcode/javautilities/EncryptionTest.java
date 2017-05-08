@@ -1,4 +1,4 @@
-package com.test;
+package com.github.vitrifiedcode.javautilities;
 
 import com.github.vitrifiedcode.javautilities.io.IO;
 import com.github.vitrifiedcode.javautilities.math.HashUtils;

@@ -1,4 +1,4 @@
-package com.test.console;
+package com.github.vitrifiedcode.javautilities.console;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
