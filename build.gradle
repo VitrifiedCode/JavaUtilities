@@ -64,10 +64,18 @@ artifacts {
 }
 
 jmh {
-    iterations = 20
-    benchmarkMode = ['avgt']
-    fork = 2
-    warmupIterations = 10
+    if(project.hasProperty("EXECUTE_JMH")) {
+        iterations = 20
+        benchmarkMode = ['avgt']
+        fork = 2
+        warmupIterations = 10
+    } else
+    {
+        iterations = 0
+        benchmarkMode = ['avgt']
+        fork = 0
+        warmupIterations = 0
+    }
 }
 
 task executeClass(type:JavaExec) {
