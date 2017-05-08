@@ -70,14 +70,12 @@ jmh {
     warmupIterations = 10
 }
 
-def mainClass = ""
-
 task executeClass(type:JavaExec) {
-    main = mainClass
+    main = project.hasProperty('mainClass') ? project.findProperty('mainClass') : ''
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task executeClassTest(type:JavaExec) {
-    main = mainClass
+    main = project.hasProperty('mainClass') ? project.findProperty('mainClass') : ''
     classpath = sourceSets.test.runtimeClasspath
 }
