@@ -5,7 +5,7 @@ before_script: chmod a+x gradlew
 script:
   - ./gradlew build
   - ./gradlew jmh
-  - ./gradlew -DmainClass=com.github.vitrifiedcode.javautilities.junit.JUnitRunner executeClassTest
+  - ./gradlew -PmainClass=com.github.vitrifiedcode.javautilities.junit.JUnitRunner executeClassTest
 jdk: oraclejdk8
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
