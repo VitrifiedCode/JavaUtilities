@@ -1,16 +1,10 @@
 package com.github.vitrifiedcode.javautilities.math;
 
-import com.github.vitrifiedcode.javautilities.reflection.ReflectionUtil;
-
-import java.lang.reflect.Field;
 import java.util.Random;
-import java.util.UUID;
 
 @SuppressWarnings({ "unused", "UnnecessaryBoxing" })
 public final class MathUtil
 {
-
-
     private MathUtil() {}
 
 
@@ -75,34 +69,6 @@ public final class MathUtil
     public static double deg2radNP(final double in) { return in * DEG2RAD_NP; }
 
     public static double rad2degNP(final double in) { return in * RAD2DEG_NP; }
-    //endregion
-
-    //region Random
-    public static final Random RANDOM = new Random();
-
-    public static void updateRandom()
-    {
-        try
-        {
-            Field rand = ReflectionUtil.getField(MathUtil.class, "RANDOM");
-            ReflectionUtil.setFinal(rand, false);
-            rand.set(null, new Random());
-            ReflectionUtil.setFinal(rand, false);
-        }
-        catch(IllegalAccessException | NoSuchFieldException ignored) {}
-    }
-
-    public static void updateRandom(final long seed)
-    {
-        try
-        {
-            Field rand = ReflectionUtil.getField(MathUtil.class, "RANDOM");
-            ReflectionUtil.setFinal(rand, false);
-            rand.set(null, new Random(seed));
-            ReflectionUtil.setFinal(rand, false);
-        }
-        catch(IllegalAccessException | NoSuchFieldException ignored) {}
-    }
     //endregion
 
     /**
@@ -269,22 +235,6 @@ public final class MathUtil
         return a > b ? a : b;
     }
 
-    public static byte setBit(byte mask, int bit, boolean value) { return (byte) (mask | ((value ? 1 : 0) << bit)); }
-
-    public static boolean getBit(byte mask, int bit) { return (mask & 1 << bit) != 0; }
-
-    public static short setBit(short mask, int bit, boolean value) { return (short) (mask | ((value ? 1 : 0) << bit)); }
-
-    public static boolean getBit(short mask, int bit) { return (mask & 1 << bit) != 0; }
-
-    public static int setBit(int mask, int bit, boolean value) { return mask | ((value ? 1 : 0) << bit); }
-
-    public static boolean getBit(int mask, int bit) { return (mask & 1 << bit) != 0; }
-
-    public static long setBit(long mask, int bit, boolean value) { return mask | ((value ? 1 : 0) << bit); }
-
-    public static boolean getBit(long mask, int bit) { return (mask & 1 << bit) != 0; }
-
     //region Logarithmic Functions
 
     /**
@@ -295,6 +245,15 @@ public final class MathUtil
      * @return The logX(in)
      */
     public static double log(double base, double in) { return StrictMath.log(in) / StrictMath.log(base); }
+
+    /**
+     * Allows for the calculate of logX(in), may have minor performance boost from using direct call to StrictMath lowering stack overhead.
+     *
+     * @param base The base of the log.
+     * @param in   The value to find the log of.
+     * @return The logX(in)
+     */
+    public static double logX(double base, double in) { return StrictMath.log(in) / StrictMath.log(base); }
 
     /**
      * Use the predefined square log instead of a custom implementation.
@@ -640,18 +599,6 @@ public final class MathUtil
      * Gets the decimal portion of the given double. For instance, {@code frac(5.5)} returns {@code .5}.
      */
     public static double frac(double number) { return number - Math.floor(number); }
-
-    public static UUID getRandomUUID(Random rand)
-    {
-        long i = rand.nextLong() & -61441L | 16384L;
-        long j = rand.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
-        return new UUID(i, j);
-    }
-
-    /**
-     * Generates a random UUID using the shared random
-     */
-    public static UUID getRandomUUID() { return getRandomUUID(RANDOM); }
 
     public static double pct(double x, double y, double z) { return (x - y) / (z - y); }
 

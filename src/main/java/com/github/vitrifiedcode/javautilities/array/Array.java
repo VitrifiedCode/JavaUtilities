@@ -378,7 +378,8 @@ public final class Array
     @Nonnull
     public static <T> List<T> remove(final @Nonnull List<T> list, final int index)
     {
-        final int size = list.size();
+        final int size = list.size() - 1;
+        if(index < 0 || index > size) { throw new IndexOutOfBoundsException(); }
         if(index == size) { list.remove(index); }
         else { list.set(index, list.remove(size)); }
         return list;
@@ -387,18 +388,14 @@ public final class Array
     @Nonnull
     public static <T> List<T> remove(final @Nonnull List<T> list, final @Nonnull T element)
     {
-        final int index = list.indexOf(element);
-        final int size = list.size();
-        if(index == size) { list.remove(element); }
-        else { list.set(index, list.remove(size)); }
-        return list;
+        return remove(list, list.indexOf(element));
     }
 
     @Nonnull
     public static <T> T[] reverse(final @Nonnull T[] arr)
     {
-        @SuppressWarnings("unchecked")
-        T[] out = (T[]) new Object[arr.length];
+        if(arr.length < 2) { return arr; }
+        T[] out = (T[]) java.lang.reflect.Array.newInstance(arr[0].getClass(), arr.length);
         int len = arr.length - 1;
         for(int i = len; i >= 0; ++i)
         {

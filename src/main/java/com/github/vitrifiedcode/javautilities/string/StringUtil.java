@@ -99,4 +99,22 @@ public final class StringUtil
     {
         return ObjectUtil.equals(s0.toLowerCase(), s1.toLowerCase());
     }
+
+    public static boolean containsIgnoreCase(final String in, final String search)
+    {
+        return in.toLowerCase().contains(search.toLowerCase());
+    }
+
+    public static String toString(String name, String... data)
+    {
+        if(data.length % 2 != 0) { return ""; }
+        int tmp = data.length / 2;
+        StringBuilder sb = new StringBuilder(4 + (7 * (tmp)) + (tmp - 1) + name.length() + (data[0].length() * 10 * data.length)).append(name).append(" {");
+        for(int i = 0; i < data.length; i += 2)
+        {
+            sb.append(" \"").append(data[i]).append("\": \"").append(data[i + 1]).append('\"');
+            if(i != data.length - 2) { sb.append(','); }
+        }
+        return sb.append(" }").toString();
+    }
 }

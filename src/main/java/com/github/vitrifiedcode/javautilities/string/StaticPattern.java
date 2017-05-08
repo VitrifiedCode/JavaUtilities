@@ -11,10 +11,7 @@ public class StaticPattern
     public static Pattern getPattern(String pattern)
     {
         if(pattern == null || pattern.isEmpty()) { return null; }
-        if(PATTERNS.containsKey(pattern))
-        {
-            return PATTERNS.get(pattern);
-        }
+        if(PATTERNS.containsKey(pattern)) { return PATTERNS.get(pattern); }
 
         Pattern out = Pattern.compile(pattern);
         PATTERNS.put(pattern, out);

@@ -1,6 +1,6 @@
 package com.github.vitrifiedcode.javautilities.list.mask;
 
-import com.github.vitrifiedcode.javautilities.math.MathUtil;
+import com.github.vitrifiedcode.javautilities.object.BitConverter;
 
 public class BoolMaskL extends AbstractBoolMask
 {
@@ -15,7 +15,7 @@ public class BoolMaskL extends AbstractBoolMask
     public long getMask() { return mask; }
 
     @Override
-    public boolean getBoolean(int bit) { return MathUtil.getBit(mask, bit); }
+    public boolean getBoolean(int bit) { return BitConverter.getBit(mask, bit) == 1; }
 
     @Override
     public String toString() { return super.toString(mask); }

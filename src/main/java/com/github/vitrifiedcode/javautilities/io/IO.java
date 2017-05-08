@@ -123,7 +123,7 @@ public final class IO
             List<String> tmp = new ArrayList<>();
             while((line = reader.readLine()) != null)
             {
-                if(++counter % 1_000_000_000 == 0)
+                if(++counter % 990_500_000 == 0)
                 {
                     counter = 0;
                     out.add(tmp);

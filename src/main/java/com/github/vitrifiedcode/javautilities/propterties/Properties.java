@@ -4,6 +4,11 @@ public final class Properties
 {
     private Properties() {}
 
+    public static boolean valueOf(String property)
+    {
+        return Boolean.parseBoolean(System.getProperty(property));
+    }
+
     public static final class OS
     {
         private OS() {}
@@ -30,6 +35,6 @@ public final class Properties
         public static final String JAVA_HOME = System.getProperty("java.home");
         public static final String JAVA_VERSION = System.getProperty("java.version");
 
-        public static final boolean IS_JAR = JAVA.class.getResource("Properties.class").toString().startsWith("jar:") && (System.getProperty("devenv") != null || System.getProperty("dev") != null || System.getProperty("notJar") != null);
+        public static final boolean IS_JAR = JAVA.class.getResource("Properties.class").toString().startsWith("jar:") && !valueOf("devenv") && !valueOf("dev") && !valueOf("notJar");
     }
 }
