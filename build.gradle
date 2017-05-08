@@ -71,19 +71,19 @@ jmh {
         warmupIterations = 10
     } else
     {
-        iterations = 0
+        iterations = 1
         benchmarkMode = ['avgt']
-        fork = 0
-        warmupIterations = 0
+        fork = 1
+        warmupIterations = 1
     }
 }
 
 task executeClass(type:JavaExec) {
-    main = project.hasProperty('mainClass') ? project.findProperty('mainClass') : ''
+    main = project.hasProperty('mainClass') ? project.findProperty('mainClass') : ' '
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task executeClassTest(type:JavaExec) {
-    main = project.hasProperty('mainClass') ? project.findProperty('mainClass') : ''
+    main = project.hasProperty('mainClass') ? project.findProperty('mainClass') : ' '
     classpath = sourceSets.test.runtimeClasspath
 }
