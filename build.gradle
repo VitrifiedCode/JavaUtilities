@@ -70,7 +70,7 @@ jmh {
     warmupIterations = 10
 }
 
-mainClass = ""
+def mainClass = ""
 
 task executeClass(type:JavaExec) {
     main = mainClass
