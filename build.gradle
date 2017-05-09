@@ -64,7 +64,7 @@ jmh {
         if(project.hasProperty("highAccuracyTest")) {
             iterations = 50
             benchmarkMode = ['avgt']
-            jvmArgs = [ "-Xmx2048M", "-Xms2000M", "-XX:+UnlockDiagnosticVMOptions", "-XX:+UnlockExperimentalVMOptions", "-Djansi.passthrough=true", "-XstartOnFirstThread", "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-XX:hashCode=5", "-XX:+UseG1GC", "-XX:+UseFastAccessorMethods", "-XX:+UseFastEmptyMethods", "-XX:+OptimizeStringConcat", "-XX:+UseStringDeduplication", "-XX:+AggressiveOpts", "-XX:ParallelGCThreads=2" ]
+            jvmArgs = "-Xmx2048M -Xms2000M -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:hashCode=5 -XX:+UseG1GC -XX:+UseFastAccessorMethods -XX:+UseFastEmptyMethods -XX:+OptimizeStringConcat -XX:+UseStringDeduplication -XX:+AggressiveOpts -XX:ParallelGCThreads=2"
             fork = 4
             forceGC = true
             warmupIterations = 10
@@ -72,7 +72,7 @@ jmh {
         } else if(project.hasProperty("extremeHighAccuracyTest")) {
             iterations = 100
             benchmarkMode = ['avgt']
-            jvmArgs = [ "-Xmx2048M", "-Xms2000M", "-XX:+UnlockDiagnosticVMOptions", "-XX:+UnlockExperimentalVMOptions", "-Djansi.passthrough=true", "-XstartOnFirstThread", "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-XX:hashCode=5", "-XX:+UseG1GC", "-XX:+UseFastAccessorMethods", "-XX:+UseFastEmptyMethods", "-XX:+OptimizeStringConcat", "-XX:+UseStringDeduplication", "-XX:+AggressiveOpts", "-XX:ParallelGCThreads=2" ]
+            jvmArgs = "-Xmx2048M -Xms2000M -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:hashCode=5 -XX:+UseG1GC -XX:+UseFastAccessorMethods -XX:+UseFastEmptyMethods -XX:+OptimizeStringConcat -XX:+UseStringDeduplication -XX:+AggressiveOpts -XX:ParallelGCThreads=2"
             fork = 8
             forceGC = true
             warmupIterations = 20
@@ -83,7 +83,7 @@ jmh {
         {
             iterations = 20
             benchmarkMode = ['avgt']
-            jvmArgs = [ "-Xmx2048M", "-Xms2000M", "-XX:+UnlockDiagnosticVMOptions", "-XX:+UnlockExperimentalVMOptions", "-Djansi.passthrough=true", "-XstartOnFirstThread", "-Djava.awt.headless=true", "-Dfile.encoding=UTF-8", "-XX:hashCode=5", "-XX:+UseG1GC", "-XX:+UseFastAccessorMethods", "-XX:+UseFastEmptyMethods", "-XX:+OptimizeStringConcat", "-XX:+UseStringDeduplication", "-XX:+AggressiveOpts", "-XX:ParallelGCThreads=2" ]
+            jvmArgs = "-Xmx2048M -Xms2000M -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:hashCode=5 -XX:+UseG1GC -XX:+UseFastAccessorMethods -XX:+UseFastEmptyMethods -XX:+OptimizeStringConcat -XX:+UseStringDeduplication -XX:+AggressiveOpts -XX:ParallelGCThreads=2"
             fork = 2
             forceGC = false
             warmupIterations = 10
