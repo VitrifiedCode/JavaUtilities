@@ -7,7 +7,7 @@ before_install:
     - export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
     - export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
     - brew update
-    - brew cask install jdk
+    - brew cask install java
     - brew install scala
     - brew install sbt
 install: true
