@@ -60,11 +60,19 @@ artifacts {
 }
 
 jmh {
-    if(project.hasProperty("EXECUTE_JMH") || true) {
-        iterations = 20
-        benchmarkMode = ['avgt']
-        fork = 2
-        warmupIterations = 10
+    if(project.hasProperty("EXECUTE_JMH")) {
+        if(project.hasProperty("highAccuracyTest")) {
+            iterations = 50
+            benchmarkMode = ['avgt']
+            fork = 4
+            warmupIterations = 20
+        } else
+        {
+            iterations = 20
+            benchmarkMode = ['avgt']
+            fork = 2
+            warmupIterations = 10
+        }
     } else
     {
         iterations = 1

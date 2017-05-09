@@ -5,7 +5,8 @@ before_script: chmod a+x gradlew
 script:
   - ./gradlew build
 #  - ./gradlew jmh
-  - ./gradlew -DEXECUTE_JMH=true jmh
+#  - ./gradlew -DEXECUTE_JMH=true jmh
+  - ./gradlew -DEXECUTE_JMH=true -DhighAccuracyTest=true jmh
   - ./gradlew -PmainClass=com.github.vitrifiedcode.javautilities.junit.JUnitRunner executeClassTest
 jdk: oraclejdk8
 before_cache:
