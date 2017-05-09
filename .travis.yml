@@ -1,19 +1,11 @@
-sudo: false
+sudo: required
 language: java
-before_install:
-    - rm -rf ~/.linuxbrew
-    - yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
-    - export PATH="$HOME/.linuxbrew/bin:$PATH"
-    - export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-    - export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-    - brew update
-    - brew cask install java
-    - brew install scala
-    - brew install sbt
 install: true
 before_script: chmod a+x gradlew
 script:
   - sbt test
+  - sudo apt-get update && sudo apt-get install oracle-jdk8-installer
+  - java -version
   - ./gradlew build
 #  - ./gradlew jmh
   - ./gradlew -DEXECUTE_JMH=true jmh
