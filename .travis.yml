@@ -6,7 +6,8 @@ script:
   - ./gradlew build
 #  - ./gradlew jmh
 #  - ./gradlew -PEXECUTE_JMH=true jmh
-  - ./gradlew -PEXECUTE_JMH=true -PhighAccuracyTest=true jmh
+#  - ./gradlew -PEXECUTE_JMH=true -PhighAccuracyTest=true jmh
+  - ./gradlew -PEXECUTE_JMH=true -PextremeHighAccuracyTest=true jmh
   - ./gradlew -PmainClass=com.github.vitrifiedcode.javautilities.junit.JUnitRunner executeClassTest
 jdk: oraclejdk8
 before_cache:
