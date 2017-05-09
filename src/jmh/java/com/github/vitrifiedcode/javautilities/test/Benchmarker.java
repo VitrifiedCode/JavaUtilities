@@ -1,5 +1,7 @@
 package com.github.vitrifiedcode.javautilities.test;
 
+import com.github.vitrifiedcode.javautilities.other.RandomUtil;
+import com.github.vitrifiedcode.javautilities.string.StringUtil;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -12,27 +14,34 @@ public class Benchmarker
     public static final double x = (double) (Math.random() * 5_000_000);
     public static final double y = (double) (Math.random() * 5_000_000);
 
-    @Benchmark
-    public double add()
+    public static final String[] STRS = new String[10];
+
+    static
     {
-        return x + y;
+        for(int i = 0; i < STRS.length; ++i)
+        {
+            STRS[i] = RandomUtil.getRandomString(10, 20);
+        }
     }
 
     @Benchmark
-    public double subtract()
+    public String strUtilBuild()
     {
-        return x - y;
+        return StringUtil.build(STRS);
     }
 
     @Benchmark
-    public double multiply()
+    public String benchBuild()
     {
-        return x * y;
+        return build(STRS);
     }
 
-    @Benchmark
-    public double divide()
+    @SafeVarargs
+    public static <T> String build(final T... in)
     {
-        return x / y;
+        if(in == null || in.length == 0) { return ""; }
+        StringBuilder sb = new StringBuilder();
+        for(T s : in) { sb.append(s); }
+        return sb.toString();
     }
 }
