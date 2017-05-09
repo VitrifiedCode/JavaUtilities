@@ -3,9 +3,6 @@ language: java
 install: true
 before_script: chmod a+x gradlew
 script:
-  - sbt test
-  - sudo apt-get update && sudo apt-get install oracle-jdk8-installer
-  - java -version
   - ./gradlew build
 #  - ./gradlew jmh
   - ./gradlew -DEXECUTE_JMH=true jmh
