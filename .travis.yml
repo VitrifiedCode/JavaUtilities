@@ -1,8 +1,18 @@
 sudo: false
 language: java
+before_install:
+    - rm -rf ~/.linuxbrew
+    - yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
+    - export PATH="$HOME/.linuxbrew/bin:$PATH"
+    - export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+    - export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
+    - brew install jdk
+    - brew install scala
+    - brew install sbt
 install: true
 before_script: chmod a+x gradlew
 script:
+  - sbt test
   - ./gradlew build
 #  - ./gradlew jmh
   - ./gradlew -DEXECUTE_JMH=true jmh
