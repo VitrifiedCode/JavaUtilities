@@ -47,6 +47,11 @@ public final class StringUtil
     /**
      * A way of concatenating Strings with StringBuilder in a smaller {@literal &} more optimized fashion (most people don't set the size)
      *
+     * Benchmarks:
+     *  Benchmark             Mode  Cnt    Score    Error  Units
+     *  Size Not Calculated:  avgt   40  350.021 ± 29.974  ns/op
+     *  Size Calculated:      avgt   40  200.888 ±  8.381  ns/op
+     *
      * @param in An array of strings to concatenate
      * @return The concatenated String
      */

@@ -1,10 +1,11 @@
 package com.github.vitrifiedcode.javautilities.test;
 
 import com.github.vitrifiedcode.javautilities.other.RandomUtil;
-import com.github.vitrifiedcode.javautilities.string.StringUtil;
+import com.github.vitrifiedcode.javautilities.string.StaticPattern;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -14,34 +15,25 @@ public class Benchmarker
     public static final double x = (double) (Math.random() * 5_000_000);
     public static final double y = (double) (Math.random() * 5_000_000);
 
-    public static final String[] STRS = new String[10];
+    public static final String STR = RandomUtil.getRandomString(50, 100);
 
-    static
+    public static final Pattern PATTERN = Pattern.compile(";");
+
+    @Benchmark
+    public String replaceCompiled()
     {
-        for(int i = 0; i < STRS.length; ++i)
-        {
-            STRS[i] = RandomUtil.getRandomString(10, 20);
-        }
+        return PATTERN.matcher(STR).replaceAll("hi");
     }
 
     @Benchmark
-    public String strUtilBuild()
+    public String replace()
     {
-        return StringUtil.build(STRS);
+        return STR.replaceAll(";", "hi");
     }
 
     @Benchmark
-    public String benchBuild()
+    public String replaceStaticPattern()
     {
-        return build(STRS);
-    }
-
-    @SafeVarargs
-    public static <T> String build(final T... in)
-    {
-        if(in == null || in.length == 0) { return ""; }
-        StringBuilder sb = new StringBuilder();
-        for(T s : in) { sb.append(s); }
-        return sb.toString();
+        return StaticPattern.getPattern(";").matcher(STR).replaceAll("hi");
     }
 }
