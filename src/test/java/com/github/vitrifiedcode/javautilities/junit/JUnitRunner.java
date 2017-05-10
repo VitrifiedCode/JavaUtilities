@@ -8,9 +8,10 @@ public class JUnitRunner
 {
     public static void main(String[] args)
     {
-        Result result = JUnitCore.runClasses(MathTests.class);
+        Result result = JUnitCore.runClasses(MathTests.class, StringTests.class);
         for(Failure failure : result.getFailures())
         {
+            System.out.println(failure.getMessage());
             System.out.println(failure.toString());
         }
     }

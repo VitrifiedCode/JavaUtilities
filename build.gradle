@@ -124,7 +124,7 @@ ext.incrementVersionNumber = { ->
         versionProps['VERSION_BUILD'] = versionBuild.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
     } else {
-        throw new GradleException("Could not read version.properties!")
+        version = '1.0.0'
     }
 
     return version

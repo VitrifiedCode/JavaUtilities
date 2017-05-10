@@ -2,13 +2,10 @@ package com.github.vitrifiedcode.javautilities.list.container;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class Pair<L, R>
+public class Pair<L, R> implements Cloneable
 {
-    @Nullable
     public L left;
-    @Nullable
     public R right;
 
     public Pair() {}

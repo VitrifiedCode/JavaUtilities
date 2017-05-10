@@ -2,15 +2,11 @@ package com.github.vitrifiedcode.javautilities.list.container;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class Tuple<L, M, R>
+public class Tuple<L, M, R> implements Cloneable
 {
-    @Nullable
     public L left;
-    @Nullable
     public M middle;
-    @Nullable
     public R right;
 
     public Tuple() {}

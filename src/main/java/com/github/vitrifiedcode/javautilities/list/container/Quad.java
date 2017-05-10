@@ -2,17 +2,12 @@ package com.github.vitrifiedcode.javautilities.list.container;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class Quad<L, ML, MR, R>
+public class Quad<L, ML, MR, R> implements Cloneable
 {
-    @Nullable
     public L left;
-    @Nullable
     public ML middleL;
-    @Nullable
     public MR middleR;
-    @Nullable
     public R right;
 
     public Quad() {}
