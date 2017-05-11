@@ -44,10 +44,4 @@ public class Benchmarker
     {
         return Encryptor.computePrimes(1_000_000);
     }
-
-    @Benchmark
-    public List<Integer> primes1()
-    {
-        return Encryptor.GeneratePrimesSieveOfEratosthenes(1_000_000);
-    }
 }

@@ -112,6 +112,15 @@ public class MathTests
         t5.start();
         t6.start();
         t7.start();
+
+        while(t0.isAlive() ||
+              t1.isAlive() ||
+              t2.isAlive() ||
+              t3.isAlive() ||
+              t4.isAlive() ||
+              t5.isAlive() ||
+              t6.isAlive() ||
+              t7.isAlive()) {}
     }
 
     @Test
