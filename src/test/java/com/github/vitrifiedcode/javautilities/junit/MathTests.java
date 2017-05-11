@@ -1,6 +1,8 @@
 package com.github.vitrifiedcode.javautilities.junit;
 
 import com.github.vitrifiedcode.javautilities.encryption.XORUtils;
+import com.github.vitrifiedcode.javautilities.io.IO;
+import com.github.vitrifiedcode.javautilities.junit.matcher.AtomicErrorCollector;
 import com.github.vitrifiedcode.javautilities.junit.matcher.IsEpsilonEqual;
 import com.github.vitrifiedcode.javautilities.junit.matcher.IsValueEqual;
 import com.github.vitrifiedcode.javautilities.math.BaseConverter;
@@ -16,7 +18,7 @@ import java.util.UUID;
 public class MathTests
 {
     @Rule
-    public ErrorCollector collector = new ErrorCollector();
+    public ErrorCollector collector = new AtomicErrorCollector();
 
     @Test
     public void averages()
@@ -61,14 +63,55 @@ public class MathTests
         collector.checkThat("b34(Q5N2G) -> b10(34967928)", 34967928L, IsValueEqual.equalTo(b0.convert("Q5N2G")));
     }
 
+    private static int ID = 0;
+
+    class SinRunner implements Runnable
+    {
+        public final int min;
+        public final int max;
+        public final int id;
+
+        public SinRunner(int min, int max)
+        {
+            this.min = min;
+            this.max = max;
+            id = ID++;
+        }
+
+        @Override
+        public void run()
+        {
+            for(int i = min; i < max; ++i)
+            {
+                if(i % 100000 == 0) { IO.println(id + ": " + i); }
+                collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
+                collector.checkThat("cos of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
+            }
+        }
+    }
+
     @Test
     public void sin()
     {
-        for(int i = 0; i < 0x1FFFF; ++i)
-        {
-            collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
-            collector.checkThat("cos of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
-        }
+        int x = Integer.MIN_VALUE;
+        long inc = 4_294_967_296L / 8;
+
+        Thread t0 = new Thread(new SinRunner(x, x += inc));
+        Thread t1 = new Thread(new SinRunner(x, x += inc));
+        Thread t2 = new Thread(new SinRunner(x, x += inc));
+        Thread t3 = new Thread(new SinRunner(x, x += inc));
+        Thread t4 = new Thread(new SinRunner(x, x += inc));
+        Thread t5 = new Thread(new SinRunner(x, x += inc));
+        Thread t6 = new Thread(new SinRunner(x, x += inc));
+        Thread t7 = new Thread(new SinRunner(x, x += inc));
+        t0.start();
+        t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
+        t6.start();
+        t7.start();
     }
 
     @Test
