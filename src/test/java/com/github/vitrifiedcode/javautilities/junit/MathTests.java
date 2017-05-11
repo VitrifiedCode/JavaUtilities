@@ -2,9 +2,10 @@ package com.github.vitrifiedcode.javautilities.junit;
 
 import com.github.vitrifiedcode.javautilities.encryption.XORUtils;
 import com.github.vitrifiedcode.javautilities.io.IO;
-import com.github.vitrifiedcode.javautilities.junit.matcher.AtomicErrorCollector;
-import com.github.vitrifiedcode.javautilities.junit.matcher.IsEpsilonEqual;
-import com.github.vitrifiedcode.javautilities.junit.matcher.IsValueEqual;
+import com.github.vitrifiedcode.javautilities.junit.junitbase.AtomicErrorCollector;
+import com.github.vitrifiedcode.javautilities.junit.junitbase.MultiThreadedRunner;
+import com.github.vitrifiedcode.javautilities.junit.junitbase.matcher.IsEpsilonEqual;
+import com.github.vitrifiedcode.javautilities.junit.junitbase.matcher.IsValueEqual;
 import com.github.vitrifiedcode.javautilities.math.BaseConverter;
 import com.github.vitrifiedcode.javautilities.math.MathUtil;
 import com.github.vitrifiedcode.javautilities.other.RandomUtil;
@@ -12,6 +13,7 @@ import org.hamcrest.core.IsEqual;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.junit.runner.RunWith;
 
 import java.util.UUID;
 
@@ -63,64 +65,37 @@ public class MathTests
         collector.checkThat("b34(Q5N2G) -> b10(34967928)", 34967928L, IsValueEqual.equalTo(b0.convert("Q5N2G")));
     }
 
-    private static int ID = 0;
-
-    class SinRunner implements Runnable
+    @RunWith(MultiThreadedRunner.class)
+    public static final class SinTest
     {
-        public final int min;
-        public final int max;
-        public final int id;
+        @Rule
+        public ErrorCollector collector = new AtomicErrorCollector();
 
-        public SinRunner(int min, int max)
-        {
-            this.min = min;
-            this.max = max;
-            id = ID++;
-        }
+        long startTime = System.currentTimeMillis();
 
-        @Override
-        public void run()
+        @Test
+        public void sin()
         {
-            for(int i = min; i < max; ++i)
+            for(int i = 0; i < 0x4FFFF; ++i)
             {
-                if(i % 25000 == 0) { IO.println(id + ": " + i); }
+                if(i % 25000 == 0) { IO.println("Sin@" + (System.currentTimeMillis() - startTime) + ": " + i); }
                 collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
                 collector.checkThat("cos of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
             }
         }
     }
 
+    long startTime = System.currentTimeMillis();
+
     @Test
     public void sin()
     {
-        int x = Integer.MIN_VALUE;
-        long inc = 4_294_967_296L / 8;
-
-        Thread t0 = new Thread(new SinRunner(x, x += inc));
-        Thread t1 = new Thread(new SinRunner(x, x += inc));
-        Thread t2 = new Thread(new SinRunner(x, x += inc));
-        Thread t3 = new Thread(new SinRunner(x, x += inc));
-        Thread t4 = new Thread(new SinRunner(x, x += inc));
-        Thread t5 = new Thread(new SinRunner(x, x += inc));
-        Thread t6 = new Thread(new SinRunner(x, x += inc));
-        Thread t7 = new Thread(new SinRunner(x, x += inc));
-        t0.start();
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t5.start();
-        t6.start();
-        t7.start();
-
-        while(t0.isAlive() ||
-              t1.isAlive() ||
-              t2.isAlive() ||
-              t3.isAlive() ||
-              t4.isAlive() ||
-              t5.isAlive() ||
-              t6.isAlive() ||
-              t7.isAlive()) {}
+        for(int i = 0; i < 0x4FFFF; ++i)
+        {
+            if(i % 25000 == 0) { IO.println("Sin0@" + (System.currentTimeMillis() - startTime) + ": " + i); }
+            collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
+            collector.checkThat("cos of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
+        }
     }
 
     @Test

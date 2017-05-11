@@ -1,4 +1,4 @@
-package com.github.vitrifiedcode.javautilities.junit.matcher;
+package com.github.vitrifiedcode.javautilities.junit.junitbase;
 
 public class AtomicErrorCollector extends org.junit.rules.ErrorCollector
 {
