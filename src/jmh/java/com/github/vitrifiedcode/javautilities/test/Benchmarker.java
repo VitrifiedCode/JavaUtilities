@@ -5,7 +5,6 @@ import com.github.vitrifiedcode.javautilities.other.RandomUtil;
 import com.github.vitrifiedcode.javautilities.string.StaticPattern;
 import org.openjdk.jmh.annotations.*;
 
-import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -41,7 +40,7 @@ public class Benchmarker
     }
 
     @Benchmark
-    public BitSet primes0()
+    public List<Integer> primes0()
     {
         return Encryptor.computePrimes(1_000_000);
     }

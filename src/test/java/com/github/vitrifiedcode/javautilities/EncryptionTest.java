@@ -11,7 +11,7 @@ public class EncryptionTest
 {
     public static void main(String[] args)
     {
-        for(int i : Encryptor.GeneratePrimesSieveOfEratosthenes(1_000_000))
+        for(int i : Encryptor.computePrimes(100))
         {
             IO.println(i);
         }

@@ -50,9 +50,9 @@ public class Encryptor
         return primes;
     }
 
-    public static BitSet computePrimes(int limit)
+    public static List<Integer> computePrimes(int limit)
     {
-        final BitSet primes = new BitSet();
+        final BitSet primes = new BitSet(limit);
         primes.set(0, false);
         primes.set(1, false);
         primes.set(2, limit, true);
@@ -62,10 +62,19 @@ public class Encryptor
             {
                 for(int j = i * i; j < limit; j += i)
                 {
-                    primes.clear(j);
+                    primes.set(j, false);
                 }
             }
         }
-        return primes;
+
+        List<Integer> out = new ArrayList<>();
+        for(int i = 0; i < limit; ++i)
+        {
+            if(primes.get(i))
+            {
+                out.add(i);
+            }
+        }
+        return out;
     }
 }
