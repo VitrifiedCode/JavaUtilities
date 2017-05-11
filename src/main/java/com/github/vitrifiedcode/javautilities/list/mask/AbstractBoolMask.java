@@ -5,7 +5,8 @@ public abstract class AbstractBoolMask
     protected final long init(boolean... arr)
     {
         long out = 0L;
-        for(byte i = 0; i < arr.length; ++i) { out |= (arr[i] ? 1 : 0) << i; }
+        byte len = (byte) (arr.length - 1);
+        for(byte i = 0; i < arr.length; ++i) { out |= (arr[i] ? 1L : 0L) << (len - i); }
         return out;
     }
 
