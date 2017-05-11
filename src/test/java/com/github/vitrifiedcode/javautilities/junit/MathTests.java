@@ -83,7 +83,7 @@ public class MathTests
         {
             for(int i = min; i < max; ++i)
             {
-                if(i % 100000 == 0) { IO.println(id + ": " + i); }
+                if(i % 25000 == 0) { IO.println(id + ": " + i); }
                 collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
                 collector.checkThat("cos of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
             }
