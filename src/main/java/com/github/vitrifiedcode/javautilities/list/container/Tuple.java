@@ -1,7 +1,8 @@
 package com.github.vitrifiedcode.javautilities.list.container;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class Tuple<L, M, R> implements Cloneable
 {
@@ -52,7 +53,7 @@ public class Tuple<L, M, R> implements Cloneable
     @Override
     public Tuple<L, M, R> clone() { return new Tuple<L, M, R>(this); }
 
-    @NotNull
+    @Nonnull
     @Override
     public String toString() { return StringUtil.build("(", left.toString(), ", ", middle.toString(), ", ", right.toString(), ")"); }
 }

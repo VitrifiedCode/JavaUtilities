@@ -1,7 +1,6 @@
 package com.github.vitrifiedcode.javautilities.reflection;
 
-import org.jetbrains.annotations.NotNull;
-
+import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -23,14 +22,14 @@ public final class ReflectionUtil
 
     }
 
-    public static Field getField(@NotNull Class c, @NotNull String field) throws NoSuchFieldException
+    public static Field getField(@Nonnull Class c, @Nonnull String field) throws NoSuchFieldException
     {
         Field out = c.getDeclaredField(field);
         out.setAccessible(true);
         return out;
     }
 
-    public static void setModifier(@NotNull Field field, int mod, boolean enabled) throws IllegalAccessException
+    public static void setModifier(@Nonnull Field field, int mod, boolean enabled) throws IllegalAccessException
     {
         field.setAccessible(true);
         int outMod = field.getModifiers();
@@ -39,21 +38,21 @@ public final class ReflectionUtil
         MODIFIERS.setInt(field, outMod);
     }
 
-    public static void setPublic(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.PUBLIC, enabled); }
+    public static void setPublic(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.PUBLIC, enabled); }
 
-    public static void setPrivate(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.PRIVATE, enabled); }
+    public static void setPrivate(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.PRIVATE, enabled); }
 
-    public static void setProtected(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.PROTECTED, enabled); }
+    public static void setProtected(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.PROTECTED, enabled); }
 
-    public static void setStatic(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.STATIC, enabled); }
+    public static void setStatic(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.STATIC, enabled); }
 
-    public static void setFinal(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.FINAL, enabled); }
+    public static void setFinal(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.FINAL, enabled); }
 
-    public static void setSynchronized(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.SYNCHRONIZED, enabled); }
+    public static void setSynchronized(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.SYNCHRONIZED, enabled); }
 
-    public static void setVolatile(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.VOLATILE, enabled); }
+    public static void setVolatile(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.VOLATILE, enabled); }
 
-    public static void setTransient(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.TRANSIENT, enabled); }
+    public static void setTransient(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.TRANSIENT, enabled); }
 
-    public static void setStrict(@NotNull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.STRICT, enabled); }
+    public static void setStrict(@Nonnull Field field, boolean enabled) throws IllegalAccessException { setModifier(field, Modifier.STRICT, enabled); }
 }

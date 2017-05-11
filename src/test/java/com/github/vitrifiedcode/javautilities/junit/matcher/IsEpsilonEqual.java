@@ -5,18 +5,18 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
-public class IsEpsilonEqualD extends BaseMatcher<Double>
+public class IsEpsilonEqual extends BaseMatcher<Double>
 {
     private final double expectedValue;
     private final double epsilon;
 
-    public IsEpsilonEqualD(double expectedValue, double epsilon)
+    public IsEpsilonEqual(double expectedValue, double epsilon)
     {
         this.expectedValue = expectedValue;
         this.epsilon = epsilon;
     }
 
-    public IsEpsilonEqualD(double expectedValue) { this(expectedValue, 1.0E-5D); }
+    public IsEpsilonEqual(double expectedValue) { this(expectedValue, 1.0E-5D); }
 
     @Override
     public boolean matches(Object actualValue)
@@ -40,12 +40,24 @@ public class IsEpsilonEqualD extends BaseMatcher<Double>
     @Factory
     public static Matcher<Double> equalTo(double operand, double epsilon)
     {
-        return new IsEpsilonEqualD(operand, epsilon);
+        return new IsEpsilonEqual(operand, epsilon);
     }
 
     @Factory
     public static Matcher<Double> equalTo(double operand)
     {
-        return new IsEpsilonEqualD(operand);
+        return new IsEpsilonEqual(operand);
+    }
+
+    @Factory
+    public static Matcher<Double> equalTo(float operand, float epsilon)
+    {
+        return new IsEpsilonEqual(operand, epsilon);
+    }
+
+    @Factory
+    public static Matcher<Double> equalTo(float operand)
+    {
+        return new IsEpsilonEqual(operand);
     }
 }

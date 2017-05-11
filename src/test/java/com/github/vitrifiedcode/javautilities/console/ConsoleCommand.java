@@ -1,41 +1,40 @@
 package com.github.vitrifiedcode.javautilities.console;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public abstract class ConsoleCommand<T>
 {
-    @NotNull
+    @Nonnull
     public final String command;
-    @NotNull
+    @Nonnull
     public final String description;
     @Nullable
     public final ParameterType[] parameterTypes;
 
-    public ConsoleCommand(@NotNull String command, @NotNull String description, @Nullable ParameterType... parameterTypes)
+    public ConsoleCommand(@Nonnull String command, @Nonnull String description, @Nullable ParameterType... parameterTypes)
     {
         this.command = command;
         this.description = description;
         this.parameterTypes = parameterTypes;
     }
 
-    public ConsoleCommand(@NotNull String command, @NotNull String description, @Nullable String parameters)
+    public ConsoleCommand(@Nonnull String command, @Nonnull String description, @Nullable String parameters)
     {
         this(command, description, parameters == null ? null : identifyParameters(parameters));
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public final String toString()
     {
         return command + ": " + description;
     }
 
-    @NotNull
+    @Nonnull
     public final String getUsage()
     {
         StringBuilder out = new StringBuilder();
@@ -44,10 +43,10 @@ public abstract class ConsoleCommand<T>
         return "Usage: `" + command + " " + out.deleteCharAt(out.length()).toString() + "`.";
     }
 
-    public abstract Result<T> execute(@NotNull String[] parameters);
+    public abstract Result<T> execute(@Nonnull String[] parameters);
 
-    @NotNull
-    private static ParameterType[] identifyParameters(final @NotNull String parameters)
+    @Nonnull
+    private static ParameterType[] identifyParameters(final @Nonnull String parameters)
     {
         final List<ParameterType> parametersOut = new ArrayList<ParameterType>();
         StringTokenizer tokens = new StringTokenizer(parameters.replaceAll(" ", ""), "<>[]", true);
@@ -79,7 +78,7 @@ public abstract class ConsoleCommand<T>
 
     private static class MutableParameterType
     {
-        @NotNull
+        @Nonnull
         public String name = "";
         public boolean required;
         public boolean opened = false;
@@ -98,7 +97,7 @@ public abstract class ConsoleCommand<T>
             this.dependency = dependency;
         }
 
-        public MutableParameterType(@NotNull ConsoleCommand.MutableParameterType copy) { this(copy.name, copy.required, copy.dependency, copy.closed); }
+        public MutableParameterType(@Nonnull ConsoleCommand.MutableParameterType copy) { this(copy.name, copy.required, copy.dependency, copy.closed); }
 
         @Override
         public String toString()
@@ -114,22 +113,22 @@ public abstract class ConsoleCommand<T>
 
     public static class ParameterType
     {
-        @NotNull
+        @Nonnull
         public final String name;
         public final boolean required;
         @Nullable
         public final ConsoleCommand.ParameterType dependency;
 
-        public ParameterType(@NotNull String name, boolean required, @Nullable ConsoleCommand.ParameterType dependency)
+        public ParameterType(@Nonnull String name, boolean required, @Nullable ConsoleCommand.ParameterType dependency)
         {
             this.name = name;
             this.required = required;
             this.dependency = dependency;
         }
 
-        public ParameterType(@NotNull ConsoleCommand.ParameterType copy) { this(copy.name, copy.required, copy.dependency); }
+        public ParameterType(@Nonnull ConsoleCommand.ParameterType copy) { this(copy.name, copy.required, copy.dependency); }
 
-        public ParameterType(@NotNull ConsoleCommand.MutableParameterType copy) { this(copy.name, copy.required, copy.getDependency()); }
+        public ParameterType(@Nonnull ConsoleCommand.MutableParameterType copy) { this(copy.name, copy.required, copy.getDependency()); }
 
         @Override
         public String toString()
@@ -137,7 +136,7 @@ public abstract class ConsoleCommand<T>
             return "ParameterType: { \"Name\": \"" + name + "\"; \"Required\": \"" + required + "\"; \"Dependency\": \"" + dependency.toString() + "\"; };";
         }
 
-        @NotNull
+        @Nonnull
         public String representation()
         {
             StringBuilder out = new StringBuilder();

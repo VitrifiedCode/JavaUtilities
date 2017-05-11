@@ -12,10 +12,21 @@ public class BaseConverter
 
     public BaseConverter(char[] charset)
     {
+        if(charset.length == 1) { throw new IllegalArgumentException("BaseConverter does not support unary."); }
+        if(charset.length == 0) { throw new IllegalArgumentException("BaseConverter does not support base0."); }
         this.charset = charset;
     }
 
     public BaseConverter(String charset) { this(charset.toCharArray()); }
+
+    public BaseConverter(int base)
+    {
+        charset = new char[base];
+        for(int i = 0; i < base; ++i)
+        {
+            charset[i] = (char) (i + 0x20);
+        }
+    }
 
     /**
      * Returns the number of characters the converted number will take to represent

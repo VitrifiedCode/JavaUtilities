@@ -1,7 +1,8 @@
 package com.github.vitrifiedcode.javautilities.list.container;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class Pair<L, R> implements Cloneable
 {
@@ -47,7 +48,7 @@ public class Pair<L, R> implements Cloneable
     @Override
     public Pair<L, R> clone() { return new Pair<L, R>(this); }
 
-    @NotNull
+    @Nonnull
     @Override
     public String toString() { return StringUtil.build("(", left.toString(), ", ", right.toString(), ")"); }
 }

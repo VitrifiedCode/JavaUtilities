@@ -1,5 +1,6 @@
 package com.github.vitrifiedcode.javautilities;
 
+import com.github.vitrifiedcode.javautilities.encryption.Encryptor;
 import com.github.vitrifiedcode.javautilities.io.IO;
 import com.github.vitrifiedcode.javautilities.math.HashUtils;
 import com.github.vitrifiedcode.javautilities.object.BitConverter;
@@ -9,6 +10,14 @@ import java.math.BigInteger;
 public class EncryptionTest
 {
     public static void main(String[] args)
+    {
+        for(int i : Encryptor.GeneratePrimesSieveOfEratosthenes(1_000_000))
+        {
+            IO.println(i);
+        }
+    }
+
+    public static void main0(String[] args)
     {
         BigInteger p = BigInteger.valueOf(17);
         BigInteger q = BigInteger.valueOf(19);

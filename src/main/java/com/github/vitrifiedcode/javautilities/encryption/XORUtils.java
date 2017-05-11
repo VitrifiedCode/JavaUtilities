@@ -1,4 +1,4 @@
-package com.github.vitrifiedcode.javautilities.other;
+package com.github.vitrifiedcode.javautilities.encryption;
 
 import com.github.vitrifiedcode.javautilities.math.HashUtils;
 

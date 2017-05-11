@@ -1,9 +1,12 @@
 package com.github.vitrifiedcode.javautilities.test;
 
+import com.github.vitrifiedcode.javautilities.encryption.Encryptor;
 import com.github.vitrifiedcode.javautilities.other.RandomUtil;
 import com.github.vitrifiedcode.javautilities.string.StaticPattern;
 import org.openjdk.jmh.annotations.*;
 
+import java.util.BitSet;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -19,21 +22,33 @@ public class Benchmarker
 
     public static final Pattern PATTERN = Pattern.compile(";");
 
-    @Benchmark
+    //    @Benchmark
     public String replaceCompiled()
     {
         return PATTERN.matcher(STR).replaceAll("hi");
     }
 
-    @Benchmark
+    //    @Benchmark
     public String replace()
     {
         return STR.replaceAll(";", "hi");
     }
 
-    @Benchmark
+    //    @Benchmark
     public String replaceStaticPattern()
     {
         return StaticPattern.getPattern(";").matcher(STR).replaceAll("hi");
+    }
+
+    @Benchmark
+    public BitSet primes0()
+    {
+        return Encryptor.computePrimes(1_000_000);
+    }
+
+    @Benchmark
+    public List<Integer> primes1()
+    {
+        return Encryptor.GeneratePrimesSieveOfEratosthenes(1_000_000);
     }
 }

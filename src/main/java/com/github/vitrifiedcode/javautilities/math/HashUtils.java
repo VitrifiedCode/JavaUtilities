@@ -1,6 +1,6 @@
 package com.github.vitrifiedcode.javautilities.math;
 
-import com.github.vitrifiedcode.javautilities.other.XORUtils;
+import com.github.vitrifiedcode.javautilities.encryption.XORUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

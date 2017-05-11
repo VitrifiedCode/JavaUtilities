@@ -45,6 +45,8 @@ public final class RandomUtil
 
     public static String getRandomString(int min, int max) { return getRandomString(getRandomInt(min, max), DEFAULT_CHAR_SET); }
 
+    public static String getRandomString(int size) { return getRandomString(size, DEFAULT_CHAR_SET); }
+
     public static UUID getRandomUUID(Random rand)
     {
         long i = rand.nextLong() & -61441L | 16384L;

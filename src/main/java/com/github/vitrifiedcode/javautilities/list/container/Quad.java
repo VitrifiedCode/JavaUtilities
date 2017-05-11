@@ -1,7 +1,8 @@
 package com.github.vitrifiedcode.javautilities.list.container;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class Quad<L, ML, MR, R> implements Cloneable
 {
@@ -57,7 +58,7 @@ public class Quad<L, ML, MR, R> implements Cloneable
     @Override
     public Quad<L, ML, MR, R> clone() { return new Quad<L, ML, MR, R>(this); }
 
-    @NotNull
+    @Nonnull
     @Override
     public String toString() { return StringUtil.build("(", left, ", ", middleL, ", ", middleR, ", ", right, ")"); }
 }
