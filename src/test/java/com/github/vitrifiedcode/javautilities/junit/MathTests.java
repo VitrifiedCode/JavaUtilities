@@ -71,11 +71,11 @@ public class MathTests
         @Rule
         public ErrorCollector collector = new AtomicErrorCollector();
 
-        long startTime = System.currentTimeMillis();
 
         @Test
         public void sin()
         {
+            long startTime = System.currentTimeMillis();
             for(int i = 0; i < 0x4FFFF; ++i)
             {
                 if(i % 25000 == 0) { IO.println("Sin@" + (System.currentTimeMillis() - startTime) + ": " + i); }
@@ -85,11 +85,11 @@ public class MathTests
         }
     }
 
-    long startTime = System.currentTimeMillis();
 
     @Test
     public void sin()
     {
+        long startTime = System.currentTimeMillis();
         for(int i = 0; i < 0x4FFFF; ++i)
         {
             if(i % 25000 == 0) { IO.println("Sin0@" + (System.currentTimeMillis() - startTime) + ": " + i); }
