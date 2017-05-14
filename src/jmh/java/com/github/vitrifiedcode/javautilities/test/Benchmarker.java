@@ -1,10 +1,11 @@
 package com.github.vitrifiedcode.javautilities.test;
 
-import com.github.vitrifiedcode.javautilities.encryption.Encryptor;
+import com.github.vitrifiedcode.javautilities.array.Array;
 import com.github.vitrifiedcode.javautilities.other.RandomUtil;
 import com.github.vitrifiedcode.javautilities.string.StaticPattern;
 import org.openjdk.jmh.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -39,9 +40,45 @@ public class Benchmarker
         return StaticPattern.getPattern(";").matcher(STR).replaceAll("hi");
     }
 
-    @Benchmark
-    public List<Integer> primes0()
+
+    static List<Integer> l0 = new ArrayList<>();
+    static List<Integer> l1 = new ArrayList<>();
+
+    static
     {
-        return Encryptor.computePrimes(1_000_000);
+        for(int i = 0; i < 27990; ++i)
+        {
+            l0.add(RandomUtil.getRandomInt());
+            l1.add(RandomUtil.getRandomInt());
+        }
+
+        for(int i = 0; i < 100; ++i)
+        {
+            l1.add(RandomUtil.getRandomInt());
+        }
+    }
+
+    @Benchmark
+    public int[] toPrimArr0()
+    {
+        return Array.toPrimitive(l0.toArray(new Integer[l0.size()]));
+    }
+
+    @Benchmark
+    public int[] toPrimArr1()
+    {
+        return l0.stream().mapToInt(v -> v).toArray();
+    }
+
+    @Benchmark
+    public int[] toPrimArr2()
+    {
+        return Array.toPrimitive(l1.toArray(new Integer[l1.size()]));
+    }
+
+    @Benchmark
+    public int[] toPrimArr3()
+    {
+        return l1.stream().mapToInt(v -> v).toArray();
     }
 }

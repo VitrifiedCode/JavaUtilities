@@ -6,15 +6,22 @@ import com.github.vitrifiedcode.javautilities.math.HashUtils;
 import com.github.vitrifiedcode.javautilities.object.BitConverter;
 
 import java.math.BigInteger;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class EncryptionTest
 {
-    public static void main(String[] args)
+
+    public static void main(String[] args) throws Exception
     {
-        for(int i : Encryptor.computePrimes(100))
-        {
-            IO.println(i);
-        }
+        KeyPair keyPair = Encryptor.genKeys();
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+        Key key = Encryptor.genAESKey("Hello World");
+        Encryptor.encrypt("README.md", key);
+        Encryptor.decrypt("README.md", key);
     }
 
     public static void main0(String[] args)
@@ -32,7 +39,7 @@ public class EncryptionTest
         String m = "Hello World";
         IO.println(m);
         String c = encrypt(e, n, m);
-        IO.println(HashUtils.byteArrayToHexDelimString(c.getBytes()));
+        IO.println(HashUtils.byteArrayToHexDelimitedString(c.getBytes()));
         String mm = decrypt(d, n, c);
         IO.println(mm);
 

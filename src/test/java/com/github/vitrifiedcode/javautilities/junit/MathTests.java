@@ -71,12 +71,11 @@ public class MathTests
         @Rule
         public ErrorCollector collector = new AtomicErrorCollector();
 
-
         @Test
         public void sin()
         {
             long startTime = System.currentTimeMillis();
-            for(int i = 0; i < 0x4FFFF; ++i)
+            for(int i = 0; i < max; ++i)
             {
                 if(i % 25000 == 0) { IO.println("Sin@" + (System.currentTimeMillis() - startTime) + ": " + i); }
                 collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
@@ -86,15 +85,17 @@ public class MathTests
     }
 
 
+    static final int max = 0x1FFFF;
+
     @Test
     public void sin()
     {
         long startTime = System.currentTimeMillis();
-        for(int i = 0; i < 0x4FFFF; ++i)
+        for(int i = 0; i < max; ++i)
         {
             if(i % 25000 == 0) { IO.println("Sin0@" + (System.currentTimeMillis() - startTime) + ": " + i); }
-            collector.checkThat("sin of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
-            collector.checkThat("cos of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
+            collector.checkThat("sin0 of " + i, Math.sin(i), IsEpsilonEqual.equalTo(MathUtil.sin(i), 0.075F));
+            collector.checkThat("cos0 of " + i, Math.cos(i), IsEpsilonEqual.equalTo(MathUtil.cos(i), 0.075F));
         }
     }
 
