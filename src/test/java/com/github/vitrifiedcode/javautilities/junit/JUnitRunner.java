@@ -69,7 +69,7 @@ public class JUnitRunner
 
     public static void main(String[] args) throws Exception
     {
-        Result result = JUnitCore.runClasses(MathTests.class, StringTests.class, ListTests.class, MathTests.SinTest.class);
+        Result result = JUnitCore.runClasses(MathTests.class, StringTests.class, ListTests.class);
         for(Failure failure : result.getFailures())
         {
             System.out.println(failure.getMessage());
