@@ -3,18 +3,22 @@ package com.github.vitrifiedcode.javautilities.io;
 import com.github.vitrifiedcode.javautilities.propterties.Properties;
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+@SuppressWarnings("unused")
 public final class ResourceUtil
 {
     private ResourceUtil() {}
 
-    public static String assemblePath(String... in) { return StringUtil.buildDelim(false, Properties.OS.FILE_SEPERATOR, in); }
+    @Nonnull
+    public static String assemblePath(final @Nonnull String... in) { return StringUtil.buildDelim(false, Properties.OS.FILE_SEPERATOR, in); }
 
-    public static InputStream getResource(String resource) throws IOException
+    @Nonnull
+    public static InputStream getResource(final @Nonnull String resource) throws FileNotFoundException
     {
         if(Properties.JAVA.IS_JAR) { return IO.class.getResourceAsStream(resource); }
         else

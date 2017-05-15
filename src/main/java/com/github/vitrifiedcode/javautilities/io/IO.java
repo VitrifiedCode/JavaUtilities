@@ -1,5 +1,6 @@
 package com.github.vitrifiedcode.javautilities.io;
 
+import javax.annotation.Nonnull;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -10,33 +11,38 @@ import java.util.Scanner;
 /**
  * A simple class to simplify and shorten input/output tasks.
  */
+@SuppressWarnings("unused")
 public final class IO
 {
     private IO() {}
 
     public static final Scanner INPUT = new Scanner(System.in);
 
-    public static <T> void print(T msg) { System.out.print(msg); }
+    public static <T> void print(final @Nonnull T msg) { System.out.print(msg); }
 
-    public static <T> void println(T msg) { System.out.println(msg); }
+    public static <T> void println(final @Nonnull T msg) { System.out.println(msg); }
 
-    public static <T> String nextLine(T prefix)
+    @Nonnull
+    public static <T> String nextLine(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextLine();
     }
 
+    @Nonnull
     public static String nextLine() { return INPUT.nextLine(); }
 
-    public static <T> String next(T prefix)
+    @Nonnull
+    public static <T> String next(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.next();
     }
 
+    @Nonnull
     public static String next() { return INPUT.next(); }
 
-    public static <T> byte nextByte(T prefix)
+    public static <T> byte nextByte(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextByte();
@@ -44,7 +50,7 @@ public final class IO
 
     public static byte nextByte() { return INPUT.nextByte(); }
 
-    public static <T> short nextShort(T prefix)
+    public static <T> short nextShort(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextShort();
@@ -52,7 +58,7 @@ public final class IO
 
     public static short nextShort() { return INPUT.nextShort(); }
 
-    public static int nextInt(String prefix)
+    public static <T> int nextInt(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextInt();
@@ -60,7 +66,7 @@ public final class IO
 
     public static int nextInt() { return INPUT.nextInt(); }
 
-    public static <T> long nextLong(T prefix)
+    public static <T> long nextLong(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextLong();
@@ -68,7 +74,7 @@ public final class IO
 
     public static long nextLong() { return INPUT.nextLong(); }
 
-    public static <T> float nextFloat(T prefix)
+    public static <T> float nextFloat(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextFloat();
@@ -76,7 +82,7 @@ public final class IO
 
     public static float nextFloat() { return INPUT.nextFloat(); }
 
-    public static <T> double nextDouble(T prefix)
+    public static <T> double nextDouble(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextDouble();
@@ -84,7 +90,7 @@ public final class IO
 
     public static double nextDouble() { return INPUT.nextDouble(); }
 
-    public static <T> boolean nextBoolean(T prefix)
+    public static <T> boolean nextBoolean(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextBoolean();
@@ -92,29 +98,36 @@ public final class IO
 
     public static boolean nextBoolean() { return INPUT.nextBoolean(); }
 
-    public static <T> BigInteger nextBigInteger(T prefix)
+    @Nonnull
+    public static <T> BigInteger nextBigInteger(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextBigInteger();
     }
 
+    @Nonnull
     public static BigInteger nextBigInteger() { return INPUT.nextBigInteger(); }
 
-    public static <T> BigDecimal nextBigDecimal(T prefix)
+    @Nonnull
+    public static <T> BigDecimal nextBigDecimal(final @Nonnull T prefix)
     {
         System.out.print(prefix);
         return INPUT.nextBigDecimal();
     }
 
+    @Nonnull
     public static BigDecimal nextBigDecimal() { return INPUT.nextBigDecimal(); }
 
-    public static BufferedReader newBufReader(InputStream is) { return new BufferedReader(new InputStreamReader(is)); }
+    @Nonnull
+    public static BufferedReader newBufReader(final @Nonnull InputStream is) { return new BufferedReader(new InputStreamReader(is)); }
 
-    public static BufferedWriter newBufWriter(OutputStream os) { return new BufferedWriter(new OutputStreamWriter(os)); }
+    @Nonnull
+    public static BufferedWriter newBufWriter(final @Nonnull OutputStream os) { return new BufferedWriter(new OutputStreamWriter(os)); }
 
-    public static List<List<String>> readFile(InputStream is)
+    @Nonnull
+    public static List<List<String>> readFile(final @Nonnull InputStream is)
     {
-        List<List<String>> out = new ArrayList<List<String>>();
+        List<List<String>> out = new ArrayList<>();
         try
         {
             BufferedReader reader = newBufReader(is);
@@ -142,9 +155,10 @@ public final class IO
         return out;
     }
 
-    public static List<byte[]> readBinaryFile(InputStream is)
+    @Nonnull
+    public static List<byte[]> readBinaryFile(final @Nonnull InputStream is)
     {
-        List<byte[]> out = new ArrayList<byte[]>();
+        List<byte[]> out = new ArrayList<>();
 
         final int size = 1_000_000;
 

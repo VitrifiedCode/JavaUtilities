@@ -375,10 +375,12 @@ defined by the Mozilla Public License, v. 2.0.
  */
 package com.github.vitrifiedcode.javautilities.other;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressWarnings({ "unused", "SameParameterValue" })
 public final class RandomUtil
 {
     private RandomUtil() {}
@@ -397,32 +399,39 @@ public final class RandomUtil
 
     public static int getRandomInt() { return RANDOM.nextInt(); }
 
-    public static int getRandomInt(int min, int max) { return RANDOM.nextInt((max - min) + 1) + min; }
+    public static int getRandomInt(final int min, final int max) { return RANDOM.nextInt((max - min) + 1) + min; }
 
-    public static char getRandomChar(char[] charSet) { return charSet[getRandomInt(0, charSet.length - 1)]; }
+    public static char getRandomChar(final @Nonnull char[] charSet) { return charSet[getRandomInt(0, charSet.length - 1)]; }
 
-    public static char getRandomChar(String charSet) { return getRandomChar(charSet.toCharArray()); }
+    public static char getRandomChar(final @Nonnull String charSet) { return getRandomChar(charSet.toCharArray()); }
 
     public static char getRandomChar() { return getRandomChar(DEFAULT_CHAR_SET); }
 
-    public static String getRandomString(int size, char[] charSet)
+    @Nonnull
+    public static String getRandomString(final int size, final @Nonnull char[] charSet)
     {
         StringBuilder out = new StringBuilder(size);
         for(int i = 0; i < size; ++i) { out.append(getRandomChar(charSet)); }
         return out.toString();
     }
 
-    public static String getRandomString(int size, String charSet) { return getRandomString(size, charSet.toCharArray()); }
+    @Nonnull
+    public static String getRandomString(final int size, final @Nonnull String charSet) { return getRandomString(size, charSet.toCharArray()); }
 
-    public static String getRandomString(int min, int max, char[] charSet) { return getRandomString(getRandomInt(min, max), charSet); }
+    @Nonnull
+    public static String getRandomString(final int min, final int max, char[] charSet) { return getRandomString(getRandomInt(min, max), charSet); }
 
-    public static String getRandomString(int min, int max, String charSet) { return getRandomString(getRandomInt(min, max), charSet.toCharArray()); }
+    @Nonnull
+    public static String getRandomString(final int min, final int max, String charSet) { return getRandomString(getRandomInt(min, max), charSet.toCharArray()); }
 
-    public static String getRandomString(int min, int max) { return getRandomString(getRandomInt(min, max), DEFAULT_CHAR_SET); }
+    @Nonnull
+    public static String getRandomString(final int min, final int max) { return getRandomString(getRandomInt(min, max), DEFAULT_CHAR_SET); }
 
-    public static String getRandomString(int size) { return getRandomString(size, DEFAULT_CHAR_SET); }
+    @Nonnull
+    public static String getRandomString(final int size) { return getRandomString(size, DEFAULT_CHAR_SET); }
 
-    public static UUID getRandomUUID(Random rand)
+    @Nonnull
+    public static UUID getRandomUUID(final @Nonnull Random rand)
     {
         long i = rand.nextLong() & -61441L | 16384L;
         long j = rand.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
@@ -432,5 +441,6 @@ public final class RandomUtil
     /**
      * Generates a random UUID using ThreadLocalRandom.current()
      */
+    @Nonnull
     public static UUID getRandomUUID() { return getRandomUUID(RANDOM); }
 }

@@ -377,6 +377,7 @@ package com.github.vitrifiedcode.javautilities.math;
 
 import com.github.vitrifiedcode.javautilities.encryption.XORUtils;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -393,7 +394,8 @@ public final class HashUtils
     private static MessageDigest sha384;
     private static MessageDigest sha512;
 
-    public static byte[] serialize(final Object obj)
+    @Nonnull
+    public static byte[] serialize(final @Nonnull Object obj)
     {
         try
         {
@@ -403,27 +405,29 @@ public final class HashUtils
             return b.toByteArray();
         }
         catch(IOException e) { e.printStackTrace(); }
-        return null;
+        return new byte[0];
     }
 
-    public static long hashCode(final Object o)
+    public static long hashCode(final @Nonnull Object o)
     {
-        try
-        {
-            return XORUtils.hashCode(SHA1Sum(serialize(o)));
-        }
+        try { return XORUtils.hashCode(SHA1Sum(serialize(o))); }
         catch(Exception e) { return o.hashCode(); }
     }
 
-    public static byte[] SHA1Sum(final byte[] bytes) { return sha1.digest(bytes); }
+    @Nonnull
+    public static byte[] SHA1Sum(final @Nonnull byte[] bytes) { return sha1.digest(bytes); }
 
-    public static byte[] SHA256Sum(final byte[] bytes) { return sha256.digest(bytes); }
+    @Nonnull
+    public static byte[] SHA256Sum(final @Nonnull byte[] bytes) { return sha256.digest(bytes); }
 
-    public static byte[] SHA384Sum(final byte[] bytes) { return sha384.digest(bytes); }
+    @Nonnull
+    public static byte[] SHA384Sum(final @Nonnull byte[] bytes) { return sha384.digest(bytes); }
 
-    public static byte[] SHA512Sum(final byte[] bytes) { return sha512.digest(bytes); }
+    @Nonnull
+    public static byte[] SHA512Sum(final @Nonnull byte[] bytes) { return sha512.digest(bytes); }
 
-    public static byte[] SHA768Sum(final byte[] bytes)
+    @Nonnull
+    public static byte[] SHA768Sum(final @Nonnull byte[] bytes)
     {
         byte[] sha256Bytes = sha256.digest(bytes);
         byte[] sha512Bytes = sha512.digest(bytes);
@@ -433,7 +437,7 @@ public final class HashUtils
         return out;
     }
 
-    public static byte[] SHA1024Sum(final byte[] bytes)
+    public static byte[] SHA1024Sum(final @Nonnull byte[] bytes)
     {
         byte[] sha512Bytes = sha512.digest(bytes);
         byte[] sha512Bytes0 = sha512.digest(sha512Bytes);
@@ -444,27 +448,35 @@ public final class HashUtils
     }
 
 
-    public static byte[] SHA1Sum(final Object o) { return SHA1Sum(serialize(o)); }
+    @Nonnull
+    public static byte[] SHA1Sum(final @Nonnull Object o) { return SHA1Sum(serialize(o)); }
 
-    public static byte[] SHA256Sum(final Object o) { return SHA256Sum(serialize(o)); }
+    @Nonnull
+    public static byte[] SHA256Sum(final @Nonnull Object o) { return SHA256Sum(serialize(o)); }
 
-    public static byte[] SHA384Sum(final Object o) { return SHA384Sum(serialize(o)); }
+    @Nonnull
+    public static byte[] SHA384Sum(final @Nonnull Object o) { return SHA384Sum(serialize(o)); }
 
-    public static byte[] SHA512Sum(final Object o) { return SHA512Sum(serialize(o)); }
+    @Nonnull
+    public static byte[] SHA512Sum(final @Nonnull Object o) { return SHA512Sum(serialize(o)); }
 
-    public static byte[] SHA768Sum(final Object o) { return SHA768Sum(serialize(o)); }
+    @Nonnull
+    public static byte[] SHA768Sum(final @Nonnull Object o) { return SHA768Sum(serialize(o)); }
 
-    public static byte[] SHA1024Sum(final Object o) { return SHA1024Sum(serialize(o)); }
+    @Nonnull
+    public static byte[] SHA1024Sum(final @Nonnull Object o) { return SHA1024Sum(serialize(o)); }
 
 
-    public static String byteArrayToHexString(final byte[] hash)
+    @Nonnull
+    public static String byteArrayToHexString(final @Nonnull byte[] hash)
     {
         StringBuilder out = new StringBuilder(hash.length * 2);
         for(byte b : hash) { out.append(String.format("%02x", b).toUpperCase()); }
         return out.toString();
     }
 
-    public static String byteArrayToHexDelimitedString(final byte[] hash)
+    @Nonnull
+    public static String byteArrayToHexDelimitedString(final @Nonnull byte[] hash)
     {
         StringBuilder out = new StringBuilder(hash.length * 3);
         for(byte b : hash) { out.append(String.format("%02x", b).toUpperCase()).append("-"); }

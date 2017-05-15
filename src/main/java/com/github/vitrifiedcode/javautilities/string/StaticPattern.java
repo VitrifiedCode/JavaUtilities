@@ -375,6 +375,7 @@ defined by the Mozilla Public License, v. 2.0.
  */
 package com.github.vitrifiedcode.javautilities.string;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -385,9 +386,9 @@ public final class StaticPattern
 
     public static final Map<String, Pattern> PATTERNS = new HashMap<>();
 
-    public static Pattern getPattern(String pattern)
+    @Nonnull
+    public static Pattern getPattern(final @Nonnull String pattern)
     {
-        if(pattern == null || pattern.isEmpty()) { return null; }
         if(PATTERNS.containsKey(pattern)) { return PATTERNS.get(pattern); }
 
         Pattern out = Pattern.compile(pattern);

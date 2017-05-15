@@ -375,13 +375,13 @@ defined by the Mozilla Public License, v. 2.0.
  */
 package com.github.vitrifiedcode.javautilities.math;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
-@SuppressWarnings({ "unused", "UnnecessaryBoxing" })
+@SuppressWarnings({ "unused", "UnnecessaryBoxing", "SameParameterValue" })
 public final class MathUtil
 {
     private MathUtil() {}
-
 
     public static final double PHI = 1.618033989D;
 
@@ -457,49 +457,49 @@ public final class MathUtil
     /**
      * cos looked up in the sin table with the appropriate offset
      */
-    public static float cos(float value)
+    public static float cos(final float value)
     {
         return SIN_TABLE[(int) (value * 10430.378F + 16384.0F) & 65535];
     }
 
-    public static float approachLinear(float a, float b, float max) { return a > b ? a - b < max ? b : a - max : b - a < max ? b : a + max; }
+    public static float approachLinear(final float a, final float b, final float max) { return a > b ? a - b < max ? b : a - max : b - a < max ? b : a + max; }
 
-    public static double approachLinear(double a, double b, double max) { return a > b ? a - b < max ? b : a - max : b - a < max ? b : a + max; }
+    public static double approachLinear(final double a, final double b, final double max) { return a > b ? a - b < max ? b : a - max : b - a < max ? b : a + max; }
 
-    public static float interpolate(float a, float b, float d) { return (float) approachExp(a, b, d); }
+    public static float interpolate(final float a, final float b, final float d) { return (float) approachExp(a, b, d); }
 
-    public static double interpolate(double a, double b, double d) { return approachExp(a, b, d); }
+    public static double interpolatefinal(double a, final double b, final double d) { return approachExp(a, b, d); }
 
-    public static double approachExp(double a, double b, double ratio) { return a + (b - a) * ratio; }
+    public static double approachExp(final double a, final double b, final double ratio) { return a + (b - a) * ratio; }
 
-    public static double approachExp(double a, double b, double ratio, double cap)
+    public static double approachExp(final double a, final double b, final double ratio, final double cap)
     {
         double d = (b - a) * ratio;
         if(Math.abs(d) > cap) { d = Math.signum(d) * cap; }
         return a + d;
     }
 
-    public static double retreatExp(double a, double b, double c, double ratio, double kick)
+    public static double retreatExp(final double a, final double b, final double c, final double ratio, final double kick)
     {
         double d = (Math.abs(c - a) + kick) * ratio;
         if(d > Math.abs(b - a)) { return b; }
         return a + Math.signum(b - a) * d;
     }
 
-    public static double clip(double value, double min, double max) { return value > max ? max : (value < min ? min : value); }
+    public static double clip(final double value, final double min, final double max) { return value > max ? max : (value < min ? min : value); }
 
-    public static boolean between(double a, double x, double b)
+    public static boolean between(final double a, final double x, final double b)
     {
         return a <= x && x <= b;
     }
 
-    public static int approachExpI(int a, int b, double ratio)
+    public static int approachExpI(final int a, final int b, final double ratio)
     {
         int r = (int) Math.round(approachExp(a, b, ratio));
         return r == a ? b : r;
     }
 
-    public static int retreatExpI(int a, int b, int c, double ratio, int kick)
+    public static int retreatExpI(final int a, final int b, final int c, final double ratio, final int kick)
     {
         int r = (int) Math.round(retreatExp(a, b, c, ratio, kick));
         return r == a ? b : r;
@@ -508,11 +508,11 @@ public final class MathUtil
     /**
      * Unchecked implementation to round a number. Parameter should be known to be valid in advance.
      */
-    public static int round(double d) { return (int) (d + 0.5D); }
+    public static int round(final double d) { return (int) (d + 0.5D); }
 
-    public static int ceilU(float value) { return (int) (value + 0.999999F); }
+    public static int ceilU(final float value) { return (int) (value + 0.999999F); }
 
-    public static int ceil(float value)
+    public static int ceil(final float value)
     {
         int i = (int) value;
         return value > (float) i ? i + 1 : i;
@@ -521,9 +521,9 @@ public final class MathUtil
     /**
      * Unchecked implementation to round a number up. Parameter should be known to be valid in advance.
      */
-    public static int ceilU(double d) { return (int) (d + 0.999999D); }
+    public static int ceilU(final double d) { return (int) (d + 0.999999D); }
 
-    public static int ceil(double value)
+    public static int ceil(final double value)
     {
         int i = (int) value;
         return value > (double) i ? i + 1 : i;
@@ -533,7 +533,7 @@ public final class MathUtil
      * Unchecked implementation to round a number down. Parameter should be known to be valid in advance.
      * Returns the greatest integer less than or equal to the float argument
      */
-    public static int floor(float value)
+    public static int floor(final float value)
     {
         int i = (int) value;
         return value < (float) i ? i - 1 : i;
@@ -542,12 +542,12 @@ public final class MathUtil
     /**
      * returns value cast as an int, and no greater than Integer.MAX_VALUE-1024
      */
-    public static int fastFloor(double value) { return ((int) (value + 1024.0D)) - 1024; }
+    public static int fastFloor(final double value) { return ((int) (value + 1024.0D)) - 1024; }
 
     /**
      * Returns the greatest integer less than or equal to the double argument
      */
-    public static int floor(double value)
+    public static int floor(final double value)
     {
         int i = (int) value;
         return value < (double) i ? i - 1 : i;
@@ -556,13 +556,13 @@ public final class MathUtil
     /**
      * Long version of floor()
      */
-    public static long lfloor(double value)
+    public static long lfloor(final double value)
     {
         long i = (long) value;
         return value < (double) i ? i - 1L : i;
     }
 
-    public static int absFloor(double value)
+    public static int absFloor(final double value)
     {
         return (int) (value >= 0.0D ? value : -value + 1.0D);
     }
@@ -570,17 +570,17 @@ public final class MathUtil
     /**
      * Unchecked implementation to determine the smaller of two Floats. Parameters should be known to be valid in advance.
      */
-    public static float minF(float a, float b)
+    public static float minF(final float a, final float b)
     {
         return a < b ? a : b;
     }
 
-    public static float minF(int a, float b)
+    public static float minF(final int a, final float b)
     {
         return a < b ? a : b;
     }
 
-    public static float minF(float a, int b)
+    public static float minF(final float a, final int b)
     {
         return a < b ? a : b;
     }
@@ -588,17 +588,17 @@ public final class MathUtil
     /**
      * Unchecked implementation to determine the larger of two Floats. Parameters should be known to be valid in advance.
      */
-    public static float maxF(float a, float b)
+    public static float maxF(final float a, final float b)
     {
         return a > b ? a : b;
     }
 
-    public static float maxF(int a, float b)
+    public static float maxF(final int a, final float b)
     {
         return a > b ? a : b;
     }
 
-    public static float maxF(float a, int b)
+    public static float maxF(final float a, final int b)
     {
         return a > b ? a : b;
     }
@@ -611,6 +611,14 @@ public final class MathUtil
     }
 
     //region Logarithmic Functions
+    /**
+     * Allows for the calculate of logX(in), may have minor performance boost from using direct call to StrictMath lowering stack overhead.
+     *
+     * @param base The base of the log.
+     * @param in   The value to find the log of.
+     * @return The logX(in)
+     */
+    public static double log(final double base, final double in) { return StrictMath.log(in) / StrictMath.log(base); }
 
     /**
      * Allows for the calculate of logX(in), may have minor performance boost from using direct call to StrictMath lowering stack overhead.
@@ -619,16 +627,7 @@ public final class MathUtil
      * @param in   The value to find the log of.
      * @return The logX(in)
      */
-    public static double log(double base, double in) { return StrictMath.log(in) / StrictMath.log(base); }
-
-    /**
-     * Allows for the calculate of logX(in), may have minor performance boost from using direct call to StrictMath lowering stack overhead.
-     *
-     * @param base The base of the log.
-     * @param in   The value to find the log of.
-     * @return The logX(in)
-     */
-    public static double logX(double base, double in) { return StrictMath.log(in) / StrictMath.log(base); }
+    public static double logX(final double base, final double in) { return StrictMath.log(in) / StrictMath.log(base); }
 
     /**
      * Use the predefined square log instead of a custom implementation.
@@ -636,7 +635,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log2(in)
      */
-    public static double log2(double in) { return StrictMath.log(in) / 0.6931471806D; }
+    public static double log2(final double in) { return StrictMath.log(in) / 0.6931471806D; }
 
     /**
      * Use the predefined cube log instead of a custom implementation.
@@ -644,7 +643,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log3(in)
      */
-    public static double log3(double in) { return StrictMath.log(in) / 1.098612289D; }
+    public static double log3(final double in) { return StrictMath.log(in) / 1.098612289D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -652,7 +651,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log4(in)
      */
-    public static double log4(double in) { return StrictMath.log(in) / 1.386294361D; }
+    public static double log4(final double in) { return StrictMath.log(in) / 1.386294361D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -660,7 +659,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log5(in)
      */
-    public static double log5(double in) { return StrictMath.log(in) / 1.609437912D; }
+    public static double log5(final double in) { return StrictMath.log(in) / 1.609437912D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -668,7 +667,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log6(in)
      */
-    public static double log6(double in) { return StrictMath.sqrt(in) / 2.791759469D; }
+    public static double log6(final double in) { return StrictMath.sqrt(in) / 2.791759469D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -676,7 +675,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log7(in)
      */
-    public static double log7(double in) { return StrictMath.log(in) / 2.945910149D; }
+    public static double log7(final double in) { return StrictMath.log(in) / 2.945910149D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -684,7 +683,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log8(in)
      */
-    public static double log8(double in) { return StrictMath.log(in) / 2.079441542D; }
+    public static double log8(final double in) { return StrictMath.log(in) / 2.079441542D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -692,7 +691,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log9(in)
      */
-    public static double log9(double in) { return StrictMath.log(in) / 2.197224577D; }
+    public static double log9(final double in) { return StrictMath.log(in) / 2.197224577D; }
 
     /**
      * Use pre calculated math for optimization.
@@ -700,7 +699,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The log10(in)
      */
-    public static double log10(double in) { return StrictMath.log10(in); }
+    public static double log10(final double in) { return StrictMath.log10(in); }
 
     /**
      * Because why not.
@@ -708,7 +707,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The logPi(in)
      */
-    public static double logPi(double in) { return StrictMath.log(in) / 1.144729886D; }
+    public static double logPi(final double in) { return StrictMath.log(in) / 1.144729886D; }
 
     /**
      * Calculates the natural logarithm (base e).
@@ -716,7 +715,7 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The ln(in)
      */
-    public static double loge(double in) { return StrictMath.log(in); }
+    public static double loge(final double in) { return StrictMath.log(in); }
 
     /**
      * Calculates the natural logarithm (base e).
@@ -724,62 +723,62 @@ public final class MathUtil
      * @param in The value to find the log of.
      * @return The ln(in)
      */
-    public static double ln(double in) { return StrictMath.log(in); }
+    public static double ln(final double in) { return StrictMath.log(in); }
     //endregion
 
     //region Exponentiation Functions
-    public static double pow2(double x) { return x * x; }
+    public static double pow2(final double x) { return x * x; }
 
-    public static double pow3(double x) { return x * x * x; }
+    public static double pow3(final double x) { return x * x * x; }
 
-    public static double pow4(double x) { return x * x * x * x; }
+    public static double pow4(final double x) { return x * x * x * x; }
 
-    public static double pow5(double x) { return x * x * x * x * x; }
+    public static double pow5(final double x) { return x * x * x * x * x; }
 
-    public static double pow6(double x) { return x * x * x * x * x * x; }
+    public static double pow6(final double x) { return x * x * x * x * x * x; }
 
-    public static double pow7(double x) { return x * x * x * x * x * x * x; }
+    public static double pow7(final double x) { return x * x * x * x * x * x * x; }
 
-    public static double pow8(double x) { return x * x * x * x * x * x * x * x; }
+    public static double pow8(final double x) { return x * x * x * x * x * x * x * x; }
 
-    public static double pow9(double x) { return x * x * x * x * x * x * x * x * x; }
+    public static double pow9(final double x) { return x * x * x * x * x * x * x * x * x; }
 
-    public static double pow10(double x) { return x * x * x * x * x * x * x * x * x * x; }
+    public static double pow10(final double x) { return x * x * x * x * x * x * x * x * x * x; }
 
-    public static float pow2f(float x) { return x * x; }
+    public static float pow2f(final float x) { return x * x; }
 
-    public static float pow3f(float x) { return x * x * x; }
+    public static float pow3f(final float x) { return x * x * x; }
 
-    public static float pow4f(float x) { return x * x * x * x; }
+    public static float pow4f(final float x) { return x * x * x * x; }
 
-    public static float pow5f(float x) { return x * x * x * x * x; }
+    public static float pow5f(final float x) { return x * x * x * x * x; }
 
-    public static float pow6f(float x) { return x * x * x * x * x * x; }
+    public static float pow6f(final float x) { return x * x * x * x * x * x; }
 
-    public static float pow7f(float x) { return x * x * x * x * x * x * x; }
+    public static float pow7f(final float x) { return x * x * x * x * x * x * x; }
 
-    public static float pow8f(float x) { return x * x * x * x * x * x * x * x; }
+    public static float pow8f(final float x) { return x * x * x * x * x * x * x * x; }
 
-    public static float pow9f(float x) { return x * x * x * x * x * x * x * x * x; }
+    public static float pow9f(final float x) { return x * x * x * x * x * x * x * x * x; }
 
-    public static float pow10f(float x) { return x * x * x * x * x * x * x * x * x * x; }
+    public static float pow10f(final float x) { return x * x * x * x * x * x * x * x * x * x; }
     //endregion
 
     /**
      * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters.
      */
-    public static int clamp(int num, int min, int max) { return num < min ? min : (num > max ? max : num); }
+    public static int clamp(final int num, final int min, final int max) { return num < min ? min : (num > max ? max : num); }
 
     /**
      * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
      * third parameters
      */
-    public static float clamp(float num, float min, float max) { return num < min ? min : (num > max ? max : num); }
+    public static float clamp(final float num, final float min, final float max) { return num < min ? min : (num > max ? max : num); }
 
-    public static double clamp(double num, double min, double max) { return num < min ? min : (num > max ? max : num); }
+    public static double clamp(final double num, final double min, final double max) { return num < min ? min : (num > max ? max : num); }
 
-    public static double clampedLerp(double lowerBnd, double upperBnd, double slide) { return slide < 0.0D ? lowerBnd : (slide > 1.0D ? upperBnd : lowerBnd + (upperBnd - lowerBnd) * slide); }
+    public static double clampedLerp(final double lowerBnd, final double upperBnd, final double slide) { return slide < 0.0D ? lowerBnd : (slide > 1.0D ? upperBnd : lowerBnd + (upperBnd - lowerBnd) * slide); }
 
     /**
      * Maximum of the absolute value of two numbers.
@@ -794,63 +793,64 @@ public final class MathUtil
     /**
      * Buckets an integer with specified bucket sizes.
      */
-    public static int intFloorDiv(int x, int y) { return x < 0 ? -((-x - 1) / y) - 1 : x / y; }
+    public static int intFloorDiv(final int x, final int y) { return x < 0 ? -((-x - 1) / y) - 1 : x / y; }
 
-    public static int nextInt(Random random, int minimum, int maximum) { return minimum >= maximum ? minimum : random.nextInt(maximum - minimum + 1) + minimum; }
+    public static int nextInt(final @Nonnull Random random, final int minimum, final int maximum) { return minimum >= maximum ? minimum : random.nextInt(maximum - minimum + 1) + minimum; }
 
-    public static float nextFloat(Random random, float minimum, float maximum) { return minimum >= maximum ? minimum : random.nextFloat() * (maximum - minimum) + minimum; }
+    public static float nextFloat(final @Nonnull Random random, final float minimum, final float maximum) { return minimum >= maximum ? minimum : random.nextFloat() * (maximum - minimum) + minimum; }
 
-    public static double nextDouble(Random random, double minimum, double maximum) { return minimum >= maximum ? minimum : random.nextDouble() * (maximum - minimum) + minimum; }
+    public static double nextDouble(final @Nonnull Random random, final double minimum, final double maximum) { return minimum >= maximum ? minimum : random.nextDouble() * (maximum - minimum) + minimum; }
 
-    public static <T extends Number> double averageT(T... values)
+    @SafeVarargs
+    public static <T extends Number> double averageT(final @Nonnull T... values)
     {
         double i = 0.0D;
         for(T j : values) { i += j.doubleValue(); }
         return i / (double) values.length;
     }
 
-    public static float average(float... values)
+    public static float average(final @Nonnull float... values)
     {
         double i = 0.0D;
         for(float j : values) { i += (double) j; }
         return (float) (i / (double) values.length);
     }
 
-    public static float average(byte... values)
+    public static float average(final @Nonnull byte... values)
     {
         long i = 0L;
         for(byte j : values) { i += (long) j; }
         return ((float) i) / (float) values.length;
     }
 
-    public static byte averageI(byte... values)
+    public static byte averageI(final @Nonnull byte... values)
     {
         long i = 0L;
         for(byte j : values) { i += (long) j; }
         return (byte) (i / (long) values.length);
     }
 
-    public static float average(int... values)
+    public static float average(final @Nonnull int... values)
     {
         long i = 0L;
         for(int j : values) { i += (long) j; }
         return ((float) i) / (float) values.length;
     }
 
-    public static int averageI(int... values)
+    public static int averageI(final @Nonnull int... values)
     {
         long i = 0L;
         for(int j : values) { i += (long) j; }
         return (int) (i / (long) values.length);
     }
 
-    public static boolean epsilonEquals(float x, float y) { return Math.abs(y - x) < 1.0E-5F; }
+    public static boolean epsilonEquals(final float x, final float y) { return Math.abs(y - x) < 1.0E-5F; }
 
-    public static int positiveModulo(int numerator, int denominator) { return (numerator % denominator + denominator) % denominator; }
+    public static int positiveModulo(final int numerator, final int denominator) { return (numerator % denominator + denominator) % denominator; }
 
-    public static float positiveModulo(float numerator, float denominator) { return (numerator % denominator + denominator) % denominator; }
+    public static float positiveModulo(final float numerator, final float denominator) { return (numerator % denominator + denominator) % denominator; }
 
-    public static double positiveModulo(double numerator, double denominator) { return (numerator % denominator + denominator) % denominator; }
+    public static double positiveModulo(final double numerator, final double denominator) { return (numerator % denominator + denominator) % denominator; }
 
     /**
      * the angle is reduced to an angle between -180 and +180 by mod, and a 360 check
@@ -894,7 +894,7 @@ public final class MathUtil
     /**
      * Returns the input value rounded up to the next highest power of two.
      */
-    public static int smallestEncompassingPowerOfTwo(int value)
+    public static int smallestEncompassingPowerOfTwo(final int value)
     {
         int i = value - 1;
         i |= i >> 1;
@@ -908,7 +908,7 @@ public final class MathUtil
     /**
      * Is the given value a power of two?  (1, 2, 4, 8, 16, ...)
      */
-    public static boolean isPowerOfTwo(int value) { return value != 0 && (value & value - 1) == 0; }
+    public static boolean isPowerOfTwo(final int value) { return value != 0 && (value & value - 1) == 0; }
 
     /**
      * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
@@ -925,9 +925,9 @@ public final class MathUtil
      * Efficiently calculates the floor of the base-2 log of an integer value.  This is effectively the index of the
      * highest bit that is set.  For example, if the number in binary is 0...100101, this will return 5.
      */
-    public static int log2(int value)
+    public static int log2(final int value)
     {
-        /**
+        /*
          * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two of the given
          * value. Optimized for cases where the input value is a power-of-two. If the input value is not a power-of-two,
          * then subtract 1 from the return value.
@@ -941,7 +941,7 @@ public final class MathUtil
      * For instance, {@code roundUp(1, 4)} returns 4; {@code roundUp(0, 4)} returns 0; and {@code roundUp(4, 4)} returns
      * 4.
      */
-    public static int roundUp(int number, int interval)
+    public static int roundUp(final int number, int interval)
     {
         if(interval == 0) { return 0; }
         else if(number == 0) { return interval; }
@@ -953,7 +953,7 @@ public final class MathUtil
         }
     }
 
-    public static long getCoordinateRandom(int x, int y, int z)
+    public static long getCoordinateRandom(final int x, final int y, final int z)
     {
         long i = (long) (x * 3129871) ^ (long) z * 116129781L ^ (long) y;
         i = i * i * 42317861L + i * 11L;
@@ -963,14 +963,14 @@ public final class MathUtil
     /**
      * Makes an integer color from the given red, green, and blue float values
      */
-    public static int rgb(float r, float g, float b) { return rgb(floor(r * 255.0F), floor(g * 255.0F), floor(b * 255.0F)); }
+    public static int rgb(final float r, final float g, final float b) { return rgb(floor(r * 255.0F), floor(g * 255.0F), floor(b * 255.0F)); }
 
     /**
      * Makes a single int color with the given red, green, and blue values.
      */
-    public static int rgb(int r, int g, int b) { return (((r << 8) + g) << 8) + b; }
+    public static int rgb(final int r, final int g, final int b) { return (((r << 8) + g) << 8) + b; }
 
-    public static int multiplyColor(int hexColor0, int hexColor1)
+    public static int multiplyColor(final int hexColor0, final int hexColor1)
     {
         int i = (hexColor0 & 16711680) >> 16;
         int j = (hexColor1 & 16711680) >> 16;
@@ -987,10 +987,11 @@ public final class MathUtil
     /**
      * Gets the decimal portion of the given double. For instance, {@code frac(5.5)} returns {@code .5}.
      */
-    public static double frac(double number) { return number - Math.floor(number); }
+    public static double frac(final double number) { return number - Math.floor(number); }
 
-    public static double pct(double x, double y, double z) { return (x - y) / (z - y); }
+    public static double pct(final double x, final double y, final double z) { return (x - y) / (z - y); }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public static double atan2(double x, double y)
     {
         double d0 = (y * y) + (x * x);
@@ -1044,7 +1045,7 @@ public final class MathUtil
         return value;
     }
 
-    public static int hsvToRGB(float hue, float saturation, float value)
+    public static int hsvToRGB(final float hue, final float saturation, final float value)
     {
         int i = ((int) (hue * 6.0F)) % 6;
         float f = hue * 6.0F - ((float) i);
@@ -1097,11 +1098,11 @@ public final class MathUtil
         return j << 16 | k << 8 | l;
     }
 
-    public static int hash(int value) { return (((((value >>> 16) * -2048144789) >>> 13) * -1028477387) >>> 16); }
+    public static int hash(final int value) { return (((((value >>> 16) * -2048144789) >>> 13) * -1028477387) >>> 16); }
 
-    public static int barrelShiftL(int var, int shift) { return shift == 0 ? var : (var << shift) | (var >> (32 - shift)); }
+    public static int barrelShiftL(final int var, final int shift) { return shift == 0 ? var : (var << shift) | (var >> (32 - shift)); }
 
-    public static int barrelShiftR(int var, int shift) { return shift == 0 ? var : (var >> shift) | (var << (32 - shift)); }
+    public static int barrelShiftR(final int var, final int shift) { return shift == 0 ? var : (var >> shift) | (var << (32 - shift)); }
 
-    public static int barrelShiftRU(int var, int shift) { return shift == 0 ? var : (var >>> shift) | (var << (32 - shift)); }
+    public static int barrelShiftRU(final int var, final int shift) { return shift == 0 ? var : (var >>> shift) | (var << (32 - shift)); }
 }

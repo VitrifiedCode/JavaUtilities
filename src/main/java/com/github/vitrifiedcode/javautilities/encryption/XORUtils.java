@@ -377,6 +377,7 @@ package com.github.vitrifiedcode.javautilities.encryption;
 
 import com.github.vitrifiedcode.javautilities.math.HashUtils;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -390,7 +391,7 @@ public final class XORUtils
      * @param x byte to get the absolute value of.
      * @return absolute value.
      */
-    private static byte abs(byte x) { return (byte) Math.abs(x <= 0 ? x + 1 : x); }
+    private static byte abs(final byte x) { return (byte) Math.abs(x <= 0 ? x + 1 : x); }
 
     /**
      * Get absolute value with special case to ensure value doesn't cause XORed String be the same as the input.
@@ -398,7 +399,7 @@ public final class XORUtils
      * @param x short to get the absolute value of.
      * @return absolute value.
      */
-    private static short abs(short x) { return (short) Math.abs(x <= 0 ? x + 1 : x); }
+    private static short abs(final short x) { return (short) Math.abs(x <= 0 ? x + 1 : x); }
 
     /**
      * Get absolute value with special case to ensure value doesn't cause XORed String be the same as the input.
@@ -406,7 +407,7 @@ public final class XORUtils
      * @param x int to get the absolute value of.
      * @return absolute value.
      */
-    private static int abs(int x) { return Math.abs(x <= 0 ? x + 1 : x); }
+    private static int abs(final int x) { return Math.abs(x <= 0 ? x + 1 : x); }
 
     /**
      * Get absolute value with special case to ensure value doesn't cause XORed String be the same as the input.
@@ -414,7 +415,7 @@ public final class XORUtils
      * @param x long to get the absolute value of.
      * @return absolute value.
      */
-    private static long abs(long x) { return Math.abs(x <= 0 ? x + 1 : x); }
+    private static long abs(final long x) { return Math.abs(x <= 0 ? x + 1 : x); }
 
 
     /**
@@ -424,7 +425,8 @@ public final class XORUtils
      * @param xor byte to use as the XOR code.
      * @return XORed String.
      */
-    public static byte[] xor(final byte[] in, byte xor)
+    @Nonnull
+    public static byte[] xor(final @Nonnull byte[] in, byte xor)
     {
         xor = abs(xor);
         byte[] out = new byte[in.length];
@@ -439,7 +441,8 @@ public final class XORUtils
      * @param xor byte to use as the XOR code.
      * @return XORed String.
      */
-    public static byte[] xor(final byte[] in, short xor)
+    @Nonnull
+    public static byte[] xor(final @Nonnull byte[] in, short xor)
     {
         xor = abs(xor);
         byte[] out = new byte[in.length];
@@ -454,7 +457,8 @@ public final class XORUtils
      * @param xor byte to use as the XOR code.
      * @return XORed String.
      */
-    public static byte[] xor(final byte[] in, int xor)
+    @Nonnull
+    public static byte[] xor(final @Nonnull byte[] in, int xor)
     {
         xor = abs(xor);
         byte[] out = new byte[in.length];
@@ -469,7 +473,8 @@ public final class XORUtils
      * @param xor byte to use as the XOR code.
      * @return XORed String.
      */
-    public static byte[] xor(final byte[] in, long xor)
+    @Nonnull
+    public static byte[] xor(final @Nonnull byte[] in, long xor)
     {
         xor = abs(xor);
         byte[] out = new byte[in.length];
@@ -484,7 +489,8 @@ public final class XORUtils
      * @param xor uuid to use as the XOR code.
      * @return encrypt String.
      */
-    public static byte[] xorE(final byte[] in, final UUID xor)
+    @Nonnull
+    public static byte[] xorE(final @Nonnull byte[] in, final @Nonnull UUID xor)
     {
         final long least = abs(xor.getLeastSignificantBits());
         final long most = abs(xor.getMostSignificantBits());
@@ -500,7 +506,8 @@ public final class XORUtils
      * @param xor uuid to use as the XOR code.
      * @return decrypted String.
      */
-    public static byte[] xorD(final byte[] in, final UUID xor) { return xorE(in, new UUID(xor.getLeastSignificantBits(), xor.getMostSignificantBits())); }
+    @Nonnull
+    public static byte[] xorD(final byte[] in, final @Nonnull UUID xor) { return xorE(in, new UUID(xor.getLeastSignificantBits(), xor.getMostSignificantBits())); }
 
     /**
      * XOR's a String with another Strings hashCode.
@@ -509,9 +516,11 @@ public final class XORUtils
      * @param xor String to use as the XOR code.
      * @return XORed String.
      */
-    public static byte[] xor(final byte[] in, final String xor) { return xor(in, xor.hashCode()); }
+    @Nonnull
+    public static byte[] xor(final @Nonnull byte[] in, final @Nonnull String xor) { return xor(in, xor.hashCode()); }
 
-    public static byte[] xor(final byte[] in, final Object xor) { return xor(in, HashUtils.hashCode(xor)); }
+    @Nonnull
+    public static byte[] xor(final @Nonnull byte[] in, final @Nonnull Object xor) { return xor(in, HashUtils.hashCode(xor)); }
 
     /**
      * XOR's a String with an byte.
@@ -520,7 +529,8 @@ public final class XORUtils
      * @param xor byte to use as the XOR code.
      * @return XORed String.
      */
-    public static String xor(String in, byte xor)
+    @Nonnull
+    public static String xor(final @Nonnull String in, byte xor)
     {
         xor = abs(xor);
         final char[] chars = in.toCharArray();
@@ -535,7 +545,8 @@ public final class XORUtils
      * @param xor short to use as the XOR code.
      * @return XORed String.
      */
-    public static String xor(String in, short xor)
+    @Nonnull
+    public static String xor(final @Nonnull String in, short xor)
     {
         xor = abs(xor);
         final char[] chars = in.toCharArray();
@@ -550,7 +561,8 @@ public final class XORUtils
      * @param xor int to use as the XOR code.
      * @return XORed String.
      */
-    public static String xor(String in, int xor)
+    @Nonnull
+    public static String xor(final @Nonnull String in, int xor)
     {
         xor = abs(xor);
         final char[] chars = in.toCharArray();
@@ -565,7 +577,8 @@ public final class XORUtils
      * @param xor long to use as the XOR code.
      * @return XORed String.
      */
-    public static String xor(String in, long xor)
+    @Nonnull
+    public static String xor(final @Nonnull String in, long xor)
     {
         xor = abs(xor);
         final char[] chars = in.toCharArray();
@@ -580,7 +593,8 @@ public final class XORUtils
      * @param xor uuid to use as the XOR code.
      * @return encrypt String.
      */
-    public static String xorE(final String in, final UUID xor)
+    @Nonnull
+    public static String xorE(final @Nonnull String in, final @Nonnull UUID xor)
     {
         final long least = abs(xor.getLeastSignificantBits());
         final long most = abs(xor.getMostSignificantBits());
@@ -597,7 +611,8 @@ public final class XORUtils
      * @param xor uuid to use as the XOR code.
      * @return decrypted String.
      */
-    public static String xorD(final String in, final UUID xor) { return xorE(in, new UUID(xor.getLeastSignificantBits(), xor.getMostSignificantBits())); }
+    @Nonnull
+    public static String xorD(final @Nonnull String in, final @Nonnull UUID xor) { return xorE(in, new UUID(xor.getLeastSignificantBits(), xor.getMostSignificantBits())); }
 
     /**
      * XOR's a String with another Strings hashCode.
@@ -606,7 +621,8 @@ public final class XORUtils
      * @param xor String to use as the XOR code.
      * @return XORed String.
      */
-    public static String xor(String in, String xor) { return xor(in, HashUtils.hashCode(xor)); }
+    @Nonnull
+    public static String xor(final @Nonnull String in, final @Nonnull String xor) { return xor(in, HashUtils.hashCode(xor)); }
 
     /**
      * XOR's an Object with another Object hashCode.
@@ -615,7 +631,8 @@ public final class XORUtils
      * @param xor Object to use as the XOR code.
      * @return XORed String.
      */
-    public static byte[] xor(String in, Object xor) { return xor(in, HashUtils.hashCode(xor)).getBytes(); }
+    @Nonnull
+    public static byte[] xor(final @Nonnull String in, final @Nonnull Object xor) { return xor(in, HashUtils.hashCode(xor)).getBytes(); }
 
     /**
      * Generates a hashCode by XORing the elements.
@@ -623,7 +640,7 @@ public final class XORUtils
      * @param bytes The byte[] to get the hashCode of
      * @return The hash
      */
-    public static long hashCode(byte[] bytes)
+    public static long hashCode(final @Nonnull byte[] bytes)
     {
         long out = 0;
         for(int i = 0; i < bytes.length; ++i) { out ^= (((long) bytes[i]) << (i % 48)); }

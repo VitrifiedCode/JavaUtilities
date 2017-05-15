@@ -375,26 +375,30 @@ defined by the Mozilla Public License, v. 2.0.
  */
 package com.github.vitrifiedcode.javautilities.math;
 
+import javax.annotation.Nonnull;
+
 /**
  * Creates a custom base numeral system.
  */
+@SuppressWarnings("unused")
 public class BaseConverter
 {
     /**
      * The charset to use for representing the number
      */
+    @Nonnull
     private final char[] charset;
 
-    public BaseConverter(char[] charset)
+    public BaseConverter(final @Nonnull char[] charset)
     {
         if(charset.length == 1) { throw new IllegalArgumentException("BaseConverter does not support unary."); }
         if(charset.length == 0) { throw new IllegalArgumentException("BaseConverter does not support base0."); }
         this.charset = charset;
     }
 
-    public BaseConverter(String charset) { this(charset.toCharArray()); }
+    public BaseConverter(final @Nonnull String charset) { this(charset.toCharArray()); }
 
-    public BaseConverter(int base)
+    public BaseConverter(final int base)
     {
         charset = new char[base];
         for(int i = 0; i < base; ++i)
@@ -410,7 +414,7 @@ public class BaseConverter
      * @param length The length of the charset
      * @return The number of chars required
      */
-    private static int outLength(long x, int length)
+    private static int outLength(final long x, final int length)
     {
         return ((int) MathUtil.logX(length, x)) + 1;
     }
@@ -421,6 +425,7 @@ public class BaseConverter
      * @param x The input number
      * @return A string representing the number in the form of a custom base
      */
+    @Nonnull
     public String convert(long x)
     {
         //Initialize the output string with the proper length
@@ -439,7 +444,7 @@ public class BaseConverter
         return out.reverse().toString();
     }
 
-    private int indexOf(char c)
+    private int indexOf(final char c)
     {
         for(int i = 0; i < charset.length; ++i)
         {
@@ -448,7 +453,7 @@ public class BaseConverter
         return 0;
     }
 
-    public long convert(String input)
+    public long convert(@Nonnull String input)
     {
         //Reverse the input for processing
         input = new StringBuilder(input).reverse().toString();

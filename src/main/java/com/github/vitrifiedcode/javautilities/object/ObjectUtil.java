@@ -375,11 +375,13 @@ defined by the Mozilla Public License, v. 2.0.
  */
 package com.github.vitrifiedcode.javautilities.object;
 
+import javax.annotation.Nullable;
+
 public final class ObjectUtil
 {
     private ObjectUtil() {}
 
-    public static <T> boolean equals(final T o0, final T o1)
+    public static <T> boolean equals(final @Nullable T o0, @Nullable final T o1)
     {
         boolean n0 = o0 == null;
         boolean n1 = o1 == null;

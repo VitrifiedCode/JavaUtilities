@@ -377,6 +377,7 @@ package com.github.vitrifiedcode.javautilities.string;
 
 import com.github.vitrifiedcode.javautilities.object.ObjectUtil;
 
+import javax.annotation.Nonnull;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
@@ -397,44 +398,45 @@ public final class StringUtil
     /**
      * Lots of predefined patterns
      */
-    public static final Pattern SPACE_SINGLE_PATTERN            = StaticPattern.getPattern(" ");
-    public static final Pattern SPACE_PATTERN                   = StaticPattern.getPattern(" +");
-    public static final Pattern COMMA_SINGLE_PATTERN            = StaticPattern.getPattern(",");
-    public static final Pattern COMMA_PATTERN                   = StaticPattern.getPattern(",+");
-    public static final Pattern COLON_SINGLE_PATTERN            = StaticPattern.getPattern(":");
-    public static final Pattern COLON_PATTERN                   = StaticPattern.getPattern(":+");
-    public static final Pattern SEMICOLON_SINGLE_PATTERN        = StaticPattern.getPattern(";");
-    public static final Pattern SEMICOLON_PATTERN               = StaticPattern.getPattern(";+");
-    public static final Pattern EQUALS_SINGLE_PATTERN           = StaticPattern.getPattern("=");
-    public static final Pattern EQUALS_PATTERN                  = StaticPattern.getPattern("=+");
-    public static final Pattern NULL_SINGLE_PATTERN             = StaticPattern.getPattern("\0");
-    public static final Pattern NULL_PATTERN                    = StaticPattern.getPattern("\0+");
-    public static final Pattern a_z_SINGLE_PATTERN              = StaticPattern.getPattern("[a-z]");
-    public static final Pattern a_z_PATTERN                     = StaticPattern.getPattern("[a-z]+");
-    public static final Pattern A_Z_SINGLE_PATTERN              = StaticPattern.getPattern("[A-Z]");
-    public static final Pattern A_Z_PATTERN                     = StaticPattern.getPattern("[A-Z]+");
-    public static final Pattern Aa_Zz_SINGLE_PATTERN            = StaticPattern.getPattern("[a-zA-Z]+");
-    public static final Pattern Aa_Zz_PATTERN                   = StaticPattern.getPattern("[a-zA-Z]+");
-    public static final Pattern NUMBERS_SINGLE_PATTERN          = StaticPattern.getPattern("[0-9]");
-    public static final Pattern NUMBERS_PATTERN                 = StaticPattern.getPattern("[0-9]+");
-    public static final Pattern ALPHA_NUMERIC_SINGLE_PATTERN    = StaticPattern.getPattern("[a-zA-z0-9]");
-    public static final Pattern ALPHA_NUMERIC_PATTERN           = StaticPattern.getPattern("[a-zA-z0-9]+");
+    public static final Pattern SPACE_SINGLE_PATTERN = StaticPattern.getPattern(" ");
+    public static final Pattern SPACE_PATTERN = StaticPattern.getPattern(" +");
+    public static final Pattern COMMA_SINGLE_PATTERN = StaticPattern.getPattern(",");
+    public static final Pattern COMMA_PATTERN = StaticPattern.getPattern(",+");
+    public static final Pattern COLON_SINGLE_PATTERN = StaticPattern.getPattern(":");
+    public static final Pattern COLON_PATTERN = StaticPattern.getPattern(":+");
+    public static final Pattern SEMICOLON_SINGLE_PATTERN = StaticPattern.getPattern(";");
+    public static final Pattern SEMICOLON_PATTERN = StaticPattern.getPattern(";+");
+    public static final Pattern EQUALS_SINGLE_PATTERN = StaticPattern.getPattern("=");
+    public static final Pattern EQUALS_PATTERN = StaticPattern.getPattern("=+");
+    public static final Pattern NULL_SINGLE_PATTERN = StaticPattern.getPattern("\0");
+    public static final Pattern NULL_PATTERN = StaticPattern.getPattern("\0+");
+    public static final Pattern a_z_SINGLE_PATTERN = StaticPattern.getPattern("[a-z]");
+    public static final Pattern a_z_PATTERN = StaticPattern.getPattern("[a-z]+");
+    public static final Pattern A_Z_SINGLE_PATTERN = StaticPattern.getPattern("[A-Z]");
+    public static final Pattern A_Z_PATTERN = StaticPattern.getPattern("[A-Z]+");
+    public static final Pattern Aa_Zz_SINGLE_PATTERN = StaticPattern.getPattern("[a-zA-Z]+");
+    public static final Pattern Aa_Zz_PATTERN = StaticPattern.getPattern("[a-zA-Z]+");
+    public static final Pattern NUMBERS_SINGLE_PATTERN = StaticPattern.getPattern("[0-9]");
+    public static final Pattern NUMBERS_PATTERN = StaticPattern.getPattern("[0-9]+");
+    public static final Pattern ALPHA_NUMERIC_SINGLE_PATTERN = StaticPattern.getPattern("[a-zA-z0-9]");
+    public static final Pattern ALPHA_NUMERIC_PATTERN = StaticPattern.getPattern("[a-zA-z0-9]+");
 
     /**
      * A way of concatenating Strings with StringBuilder in a smaller {@literal &} more optimized fashion (most people don't set the size)
-     *
+     * <p>
      * Benchmarks:
-     *  Benchmark             Mode  Cnt    Score    Error  Units
-     *  Size Not Calculated:  avgt   40  350.021 ± 29.974  ns/op
-     *  Size Calculated:      avgt   40  200.888 ±  8.381  ns/op
+     * Benchmark             Mode  Cnt    Score    Error  Units
+     * Size Not Calculated:  avgt   40  350.021 ± 29.974  ns/op
+     * Size Calculated:      avgt   40  200.888 ±  8.381  ns/op
      *
      * @param in An array of strings to concatenate
      * @return The concatenated String
      */
+    @Nonnull
     @SafeVarargs
-    public static <T> String build(final T... in)
+    public static <T> String build(final @Nonnull T... in)
     {
-        if(in == null || in.length == 0) { return ""; }
+        if(in.length == 0) { return ""; }
         int length = 0;
         for(T s : in)
         {
@@ -454,10 +456,11 @@ public final class StringUtil
      * @param in      An array of strings to concatenate
      * @return The concatenated String
      */
+    @Nonnull
     @SafeVarargs
-    public static <T> String buildDelim(final boolean keepEnd, final String delim, final T... in)
+    public static <T> String buildDelim(final boolean keepEnd, final @Nonnull String delim, final @Nonnull T... in)
     {
-        if(in == null || in.length == 0) { return ""; }
+        if(in.length == 0) { return ""; }
         int length = 0;
         for(T s : in)
         {
@@ -471,22 +474,23 @@ public final class StringUtil
         return out;
     }
 
-    public static boolean equals(final String s0, final String s1)
+    public static boolean equals(final @Nonnull String s0, final @Nonnull String s1)
     {
         return ObjectUtil.equals(s0, s1);
     }
 
-    public static boolean equalsIgnoreCase(final String s0, final String s1)
+    public static boolean equalsIgnoreCase(final @Nonnull String s0, final @Nonnull String s1)
     {
         return ObjectUtil.equals(s0.toLowerCase(), s1.toLowerCase());
     }
 
-    public static boolean containsIgnoreCase(final String in, final String search)
+    public static boolean containsIgnoreCase(final @Nonnull String in, final @Nonnull String search)
     {
         return in.toLowerCase().contains(search.toLowerCase());
     }
 
-    public static String toString(String name, String... data)
+    @Nonnull
+    public static String toString(final @Nonnull String name, final @Nonnull String... data)
     {
         if(data.length % 2 != 0) { return ""; }
         int tmp = data.length / 2;

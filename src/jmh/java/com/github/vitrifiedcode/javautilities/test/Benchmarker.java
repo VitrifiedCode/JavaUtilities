@@ -1,6 +1,6 @@
 package com.github.vitrifiedcode.javautilities.test;
 
-import com.github.vitrifiedcode.javautilities.array.Array;
+import com.github.vitrifiedcode.javautilities.array.ArrayUtil;
 import com.github.vitrifiedcode.javautilities.other.RandomUtil;
 import com.github.vitrifiedcode.javautilities.string.StaticPattern;
 import org.openjdk.jmh.annotations.*;
@@ -61,7 +61,7 @@ public class Benchmarker
     @Benchmark
     public int[] toPrimArr0()
     {
-        return Array.toPrimitive(l0.toArray(new Integer[l0.size()]));
+        return ArrayUtil.toPrimitive(l0.toArray(new Integer[l0.size()]));
     }
 
     @Benchmark
@@ -73,7 +73,7 @@ public class Benchmarker
     @Benchmark
     public int[] toPrimArr2()
     {
-        return Array.toPrimitive(l1.toArray(new Integer[l1.size()]));
+        return ArrayUtil.toPrimitive(l1.toArray(new Integer[l1.size()]));
     }
 
     @Benchmark

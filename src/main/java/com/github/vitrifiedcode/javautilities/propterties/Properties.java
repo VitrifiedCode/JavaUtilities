@@ -375,11 +375,13 @@ defined by the Mozilla Public License, v. 2.0.
  */
 package com.github.vitrifiedcode.javautilities.propterties;
 
+import javax.annotation.Nonnull;
+
 public final class Properties
 {
     private Properties() {}
 
-    public static boolean valueOf(String property)
+    public static boolean valueOf(final @Nonnull String property)
     {
         return Boolean.parseBoolean(System.getProperty(property));
     }

@@ -373,263 +373,567 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   This Source Code Form is "Incompatible With Secondary Licenses", as
 defined by the Mozilla Public License, v. 2.0.
  */
-package com.github.vitrifiedcode.javautilities.object;
+package com.github.vitrifiedcode.javautilities.array;
+
 
 import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-@SuppressWarnings({ "WeakerAccess", "unused", "SameParameterValue" })
-public final class BitConverter
+@SuppressWarnings({ "unused", "UnnecessaryUnboxing", "Convert2Diamond", "UnnecessaryBoxing", "unchecked" })
+public final class ArrayUtil
 {
-    private BitConverter() {}
+    private ArrayUtil() {}
 
-    //region Bit Modification
-    //region Get
-    public static byte getBit(final byte n, final int index)
+    //region String2Primitive
+    @Nonnull
+    public static boolean[] toBoolean(final @Nonnull String... in)
     {
-        return (byte) ((n >> index) & 0x01);
+        boolean[] out = new boolean[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Boolean.parseBoolean(in[i]); }
+        return out;
     }
 
-    public static byte getBit(final short n, final int index)
+    @Nonnull
+    public static char[] toChar(final @Nonnull String... in)
     {
-        return (byte) ((n >> index) & 0x01);
+        char[] out = new char[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].charAt(0); }
+        return out;
     }
 
-    public static byte getBit(final int n, final int index)
+    @Nonnull
+    public static byte[] toByte(final @Nonnull String... in)
     {
-        return (byte) ((n >> index) & 0x01);
+        byte[] out = new byte[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Byte.parseByte(in[i]); }
+        return out;
     }
 
-    public static byte getBit(final long n, final int index)
+    @Nonnull
+    public static int[] toInt(final @Nonnull String... in)
     {
-        return (byte) ((n >> index) & 0x01);
+        int[] out = new int[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Integer.parseInt(in[i]); }
+        return out;
+    }
+
+    @Nonnull
+    public static short[] toShort(final @Nonnull String... in)
+    {
+        short[] out = new short[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Short.parseShort(in[i]); }
+        return out;
+    }
+
+    @Nonnull
+    public static long[] toLong(final @Nonnull String... in)
+    {
+        long[] out = new long[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Long.parseLong(in[i]); }
+        return out;
+    }
+
+    @Nonnull
+    public static float[] toFloat(final @Nonnull String... in)
+    {
+        float[] out = new float[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Float.parseFloat(in[i]); }
+        return out;
+    }
+
+    @Nonnull
+    public static double[] toDouble(final @Nonnull String... in)
+    {
+        double[] out = new double[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Double.parseDouble(in[i]); }
+        return out;
+    }
+
+    @Nonnull
+    public static boolean[] toBoolean(@Nonnull String in) { return toBoolean(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static char[] toChar(@Nonnull String in) { return toChar(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static String[] toString(@Nonnull String in) { return in.replace("[", "").replace("]", "").split(", "); }
+
+    @Nonnull
+    public static byte[] toByte(@Nonnull String in) { return toByte(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static short[] toShort(@Nonnull String in) { return toShort(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static int[] toInt(@Nonnull String in) { return toInt(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static long[] toLong(@Nonnull String in) { return toLong(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static float[] toFloat(String in) { return toFloat(in.replace("[", "").replace("]", "").split(", ")); }
+
+    @Nonnull
+    public static double[] toDouble(String in) { return toDouble(in.replace("[", "").replace("]", "").split(", ")); }
+    //endregion
+
+    //region ToPrimitive
+    @Nonnull
+    public static boolean[] toPrimitive(final @Nonnull Boolean[] in)
+    {
+        boolean[] out = new boolean[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].booleanValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static char[] toPrimitive(final @Nonnull Character[] in)
+    {
+        char[] out = new char[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].charValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static byte[] toPrimitive(final @Nonnull Byte[] in)
+    {
+        byte[] out = new byte[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].byteValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static short[] toPrimitive(final @Nonnull Short[] in)
+    {
+        short[] out = new short[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].shortValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static int[] toPrimitive(final @Nonnull Integer[] in)
+    {
+        int[] out = new int[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].intValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static long[] toPrimitive(final @Nonnull Long[] in)
+    {
+        long[] out = new long[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].longValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static float[] toPrimitive(final @Nonnull Float[] in)
+    {
+        float[] out = new float[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].floatValue(); }
+        return out;
+    }
+
+    @Nonnull
+    public static double[] toPrimitive(final @Nonnull Double[] in)
+    {
+        double[] out = new double[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = in[i].doubleValue(); }
+        return out;
     }
     //endregion
 
-    //region Set
-    public static byte setBit(final byte n, final int index, final boolean value)
+    //region FromPrimitive
+    @Nonnull
+    public static Boolean[] fromPrimitive(final @Nonnull boolean[] in)
     {
-        if(index >= Byte.SIZE || index < 0) { throw new IllegalArgumentException("Index must be less than " + Byte.SIZE + " and larger than or equal to 0."); }
-        byte tmp = (byte) (1 << index);
-        return (byte) (value ? (n & ~tmp) | tmp : n & ~tmp);
-    }
-
-    public static short setBit(final short n, final int index, final boolean value)
-    {
-        if(index >= Short.SIZE || index < 0) { throw new IllegalArgumentException("Index must be less than " + Short.SIZE + " and larger than or equal to 0."); }
-        short tmp = (short) (1 << index);
-        return (short) (value ? (n & ~tmp) | tmp : n & ~tmp);
-    }
-
-    public static int setBit(final int n, final int index, final boolean value)
-    {
-        if(index >= Integer.SIZE || index < 0) { throw new IllegalArgumentException("Index must be less than " + Integer.SIZE + " and larger than or equal to 0."); }
-        int tmp = 1 << index;
-        return (value ? (n & ~tmp) | tmp : n & ~tmp);
-    }
-
-    public static long setBit(final long n, final int index, final boolean value)
-    {
-        if(index >= Long.SIZE || index < 0) { throw new IllegalArgumentException("Index must be less than " + Long.SIZE + " and larger than or equal to 0."); }
-        long tmp = (long) (1 << index);
-        return value ? (n & ~tmp) | tmp : n & ~tmp;
-    }
-    //endregion
-    //endregion
-
-    //region To Bytes
-    public static byte[] getBytes(final boolean x)
-    {
-        return new byte[] { (byte) (x ? 1 : 0) };
+        Boolean[] out = new Boolean[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Boolean.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final char c)
+    public static Character[] fromPrimitive(final @Nonnull char[] in)
     {
-        return new byte[] { (byte) (c & 0xff), (byte) (c >> 8 & 0xff) };
+        Character[] out = new Character[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Character.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final short x)
+    public static Byte[] fromPrimitive(final @Nonnull byte[] in)
     {
-        return new byte[] { (byte) (x >>> 8), (byte) x };
+        Byte[] out = new Byte[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Byte.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final int x)
+    public static Short[] fromPrimitive(final @Nonnull short[] in)
     {
-        return new byte[] { (byte) (x >>> 24), (byte) (x >>> 16), (byte) (x >>> 8), (byte) x };
+        Short[] out = new Short[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Short.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final long x)
+    public static Integer[] fromPrimitive(final @Nonnull int[] in)
     {
-        return new byte[] { (byte) (x >>> 56), (byte) (x >>> 48), (byte) (x >>> 40), (byte) (x >>> 32), (byte) (x >>> 24), (byte) (x >>> 16), (byte) (x >>> 8), (byte) x };
+        Integer[] out = new Integer[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Integer.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final float x)
+    public static Long[] fromPrimitive(final @Nonnull long[] in)
     {
-        return getBytes(Float.floatToRawIntBits(x));
+        Long[] out = new Long[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Long.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final double x)
+    public static Float[] fromPrimitive(final @Nonnull float[] in)
     {
-        return getBytes(Double.doubleToRawLongBits(x));
+        Float[] out = new Float[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Float.valueOf(in[i]); }
+        return out;
     }
 
     @Nonnull
-    public static byte[] getBytes(final @Nonnull String x)
+    public static Double[] fromPrimitive(final @Nonnull double[] in)
     {
-        return x.getBytes();
+        Double[] out = new Double[in.length];
+        for(int i = 0; i < in.length; ++i) { out[i] = Double.valueOf(in[i]); }
+        return out;
     }
     //endregion
 
-    //region Float Bits
-    public static long floatToInt32Bits(final float x)
+    //region Append
+    @Nonnull
+    public static boolean[] append(@Nonnull boolean[] arr, final boolean app)
     {
-        return Float.floatToRawIntBits(x);
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
     }
 
-    public static double int32BitsToFloat(final int x)
+    @Nonnull
+    public static char[] append(@Nonnull char[] arr, final char app)
     {
-        return Float.intBitsToFloat(x);
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
     }
 
-    public static long doubleToInt64Bits(final double x)
+    @Nonnull
+    public static String[] append(@Nonnull String[] arr, final @Nonnull String app)
     {
-        return Double.doubleToRawLongBits(x);
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
     }
 
-    public static double int64BitsToDouble(final long x)
+    @Nonnull
+    public static byte[] append(@Nonnull byte[] arr, final byte app)
     {
-        return Double.longBitsToDouble(x);
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+
+    @Nonnull
+    public static short[] append(@Nonnull short[] arr, final short app)
+    {
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+
+    @Nonnull
+    public static int[] append(@Nonnull int[] arr, final int app)
+    {
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+
+    @Nonnull
+    public static long[] append(@Nonnull long[] arr, final long app)
+    {
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+
+    @Nonnull
+    public static float[] append(@Nonnull float[] arr, final float app)
+    {
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+
+    @Nonnull
+    public static double[] append(@Nonnull double[] arr, final double app)
+    {
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+
+    @Nonnull
+    public static Object[] append(@Nonnull Object[] arr, final @Nonnull Object app)
+    {
+        final int len = arr.length;
+        arr = Arrays.copyOf(arr, len + 1);
+        arr[len] = app;
+        return arr;
+    }
+    //endregion
+
+    //region Concat
+    public static <T> T[] concat(T[]... arrs)
+    {
+        int newLength = 0;
+        for(T[] t : arrs) { newLength += t.length; }
+        T[] out = (T[]) (new Object[newLength]);
+        int offset = 0;
+        for(T[] t : arrs)
+        {
+            System.arraycopy(t, 0, out, offset, t.length);
+            offset = t.length;
+        }
+        return out;
     }
     //endregion
 
-    //region From Bytes
-    public static boolean toBoolean(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
+    //region List2Array
+    @Nonnull
+    public static boolean[] toBooleanArray(final @Nonnull List<Boolean> list) { return toPrimitive(list.toArray(new Boolean[list.size()])); }
+
+    @Nonnull
+    public static char[] toCharArray(final @Nonnull List<Character> list) { return toPrimitive(list.toArray(new Character[list.size()])); }
+
+    @Nonnull
+    public static String[] toStringArray(final @Nonnull List<String> list) { return list.toArray(new String[list.size()]); }
+
+    @Nonnull
+    public static byte[] toByteArray(final @Nonnull List<Byte> list) { return toPrimitive(list.toArray(new Byte[list.size()])); }
+
+    @Nonnull
+    public static short[] toShortArray(final @Nonnull List<Short> list) { return toPrimitive(list.toArray(new Short[list.size()])); }
+
+    @Nonnull
+    public static int[] toIntArray(final @Nonnull List<Integer> list)
     {
-        if(bytes.length != 1) { throw new IllegalArgumentException("The length of the byte array must be 1 byte long."); }
-        return bytes[index] != 0;
+        if(list.size() < 28000) { return toPrimitive(list.toArray(new Integer[list.size()])); }
+        return list.stream().mapToInt(v -> v).toArray();
     }
 
-    public static short toInt16(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
+    @Nonnull
+    public static long[] toLongArray(final @Nonnull List<Long> list)
     {
-        if(bytes.length != 2) { throw new IllegalArgumentException("The length of the byte array must be 2 bytes long."); }
-        return (short) ((0xff & bytes[index]) << 8 | (0xff & bytes[index + 1]));
+        if(list.size() < 28000) { return toPrimitive(list.toArray(new Long[list.size()])); }
+        return list.stream().mapToLong(v -> v).toArray();
     }
 
-    public static int toInt32(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
+    @Nonnull
+    public static float[] toFloatArray(final @Nonnull List<Float> list)
     {
-        if(bytes.length != 4) { throw new IllegalArgumentException("The length of the byte array must be 4 bytes long."); }
-        return (((0xff & bytes[index]) << 24) |
-                ((0xff & bytes[index + 1]) << 16) |
-                ((0xff & bytes[index + 2]) << 8) |
-                (0xff & bytes[index + 3]));
+        return toPrimitive(list.toArray(new Float[list.size()]));
     }
 
-    public static long toInt64(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
+    @Deprecated
+    public static abstract class PrimitiveStream<T> implements Stream<T>
     {
-        if(bytes.length != 8) { throw new IllegalArgumentException("The length of the byte array must be 8 bytes long."); }
-        return (((long) (0xff & bytes[index]) << 56) |
-                ((long) (0xff & bytes[index + 1]) << 48) |
-                ((long) (0xff & bytes[index + 2]) << 40) |
-                ((long) (0xff & bytes[index + 3]) << 32) |
-                ((long) (0xff & bytes[index + 4]) << 24) |
-                ((long) (0xff & bytes[index + 5]) << 16) |
-                ((long) (0xff & bytes[index + 6]) << 8) |
-                (long) (0xff & bytes[index + 7]));
+        private final Stream<T> stream;
+
+        public PrimitiveStream(Stream<T> stream) { this.stream = stream; }
+
+        //region Impl
+        @Override
+        public Stream<T> filter(Predicate<? super T> predicate) { return stream.filter(predicate); }
+
+        @Override
+        public <R> Stream<R> map(Function<? super T, ? extends R> mapper) { return stream.map(mapper); }
+
+        @Override
+        public IntStream mapToInt(ToIntFunction<? super T> mapper) { return stream.mapToInt(mapper); }
+
+        @Override
+        public LongStream mapToLong(ToLongFunction<? super T> mapper) { return stream.mapToLong(mapper); }
+
+        @Override
+        public DoubleStream mapToDouble(ToDoubleFunction<? super T> mapper) { return stream.mapToDouble(mapper); }
+
+        @Override
+        public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) { return stream.flatMap(mapper); }
+
+        @Override
+        public IntStream flatMapToInt(Function<? super T, ? extends IntStream> mapper) { return stream.flatMapToInt(mapper); }
+
+        @Override
+        public LongStream flatMapToLong(Function<? super T, ? extends LongStream> mapper) { return stream.flatMapToLong(mapper); }
+
+        @Override
+        public DoubleStream flatMapToDouble(Function<? super T, ? extends DoubleStream> mapper) { return stream.flatMapToDouble(mapper); }
+
+        @Override
+        public Stream<T> distinct() { return stream.distinct(); }
+
+        @Override
+        public Stream<T> sorted() { return stream.sorted(); }
+
+        @Override
+        public Stream<T> sorted(Comparator<? super T> comparator) { return stream.sorted(comparator); }
+
+        @Override
+        public Stream<T> peek(Consumer<? super T> action) { return stream.peek(action); }
+
+        @Override
+        public Stream<T> limit(long maxSize) { return stream.limit(maxSize); }
+
+        @Override
+        public Stream<T> skip(long n) { return stream.skip(n); }
+
+        @Override
+        public void forEach(Consumer<? super T> action) { stream.forEach(action); }
+
+        @Override
+        public void forEachOrdered(Consumer<? super T> action) { stream.forEachOrdered(action); }
+
+        @Override
+        public Object[] toArray() { return stream.toArray(); }
+
+        @Override
+        public <A> A[] toArray(IntFunction<A[]> generator) { return stream.toArray(generator); }
+
+        @Override
+        public T reduce(T identity, BinaryOperator<T> accumulator) { return stream.reduce(identity, accumulator); }
+
+        @Override
+        public Optional<T> reduce(BinaryOperator<T> accumulator) { return stream.reduce(accumulator); }
+
+        @Override
+        public <U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator<U> combiner) { return stream.reduce(identity, accumulator, combiner); }
+
+        @Override
+        public <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner) { return stream.collect(supplier, accumulator, combiner); }
+
+        @Override
+        public <R, A> R collect(Collector<? super T, A, R> collector) { return stream.collect(collector); }
+
+        @Override
+        public Optional<T> min(Comparator<? super T> comparator) { return stream.min(comparator); }
+
+        @Override
+        public Optional<T> max(Comparator<? super T> comparator) { return stream.max(comparator); }
+
+        @Override
+        public long count() { return stream.count(); }
+
+        @Override
+        public boolean anyMatch(Predicate<? super T> predicate) { return stream.anyMatch(predicate); }
+
+        @Override
+        public boolean allMatch(Predicate<? super T> predicate) { return stream.allMatch(predicate); }
+
+        @Override
+        public boolean noneMatch(Predicate<? super T> predicate) { return stream.noneMatch(predicate); }
+
+        @Override
+        public Optional<T> findFirst() { return stream.findFirst(); }
+
+        @Override
+        public Optional<T> findAny() { return stream.findAny(); }
+
+        @Override
+        public Iterator<T> iterator() { return stream.iterator(); }
+
+        @Override
+        public Spliterator<T> spliterator() { return stream.spliterator(); }
+
+        @Override
+        public boolean isParallel() { return stream.isParallel(); }
+
+        @Override
+        public Stream<T> sequential() { return stream.sequential(); }
+
+        @Override
+        public Stream<T> parallel() { return stream.parallel(); }
+
+        @Override
+        public Stream<T> unordered() { return stream.unordered(); }
+
+        @Override
+        public Stream<T> onClose(Runnable closeHandler) { return stream.onClose(closeHandler); }
+
+        @Override
+        public void close() { stream.close(); }
+        //endregion
     }
 
-    public static float toFloat(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
+    @Nonnull
+    public static double[] toDoubleArray(final @Nonnull List<Double> list)
     {
-        if(bytes.length != 4) { throw new IllegalArgumentException("The length of the byte array must be 4 bytes long."); }
-        return Float.intBitsToFloat(toInt32(index, bytes));
+        if(list.size() < 28000) { return toPrimitive(list.toArray(new Double[list.size()])); }
+        return list.stream().mapToDouble(v -> v).toArray();
     }
 
-    public static double toDouble(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        if(bytes.length != 8) { throw new IllegalArgumentException("The length of the byte array must be 8 bytes long."); }
-        return Double.longBitsToDouble(toInt64(index, bytes));
-    }
-
-    public static char toChar(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        if(bytes.length != 2) { throw new IllegalArgumentException("The length of the byte array must be 2 bytes long."); }
-        return (char) ((0xff & bytes[index]) << 8 | (0xff & bytes[index + 1]));
-    }
-
-    public static String toString(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        if(bytes.length < 1) { throw new IllegalArgumentException("The byte array must have at least 1 byte."); }
-        return new String(bytes);
-    }
-
-
-    public static boolean toBoolean(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toBoolean(0, bytes);
-    }
-
-    public static short toInt16(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt16(0, bytes);
-    }
-
-    public static short toShort(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt16(index, bytes);
-    }
-
-    public static short toShort(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt16(0, bytes);
-    }
-
-    public static int toInt32(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt32(0, bytes);
-    }
-
-    public static int toInt(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt32(index, bytes);
-    }
-
-    public static int toInt(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt32(0, bytes);
-    }
-
-    public static long toInt64(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt64(0, bytes);
-    }
-
-    public static long toLong(final int index, final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt64(index, bytes);
-    }
-
-    public static long toLong(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toInt64(0, bytes);
-    }
-
-    public static float toFloat(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toFloat(0, bytes);
-    }
-
-    public static double toDouble(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toDouble(0, bytes);
-    }
-
-    public static char toChar(final @Nonnull byte... bytes) throws IllegalArgumentException
-    {
-        return toChar(0, bytes);
-    }
+    @Nonnull
+    public static Object[] toObjectArray(final @Nonnull List<Object> list) { return list.toArray(new Object[list.size()]); }
     //endregion
+
+    @Nonnull
+    public static <K, V> Map<K, List<V>> appendToMap(final @Nonnull Map<K, List<V>> map, final @Nonnull K key, final @Nonnull V value)
+    {
+        List<V> temp;
+        if(!map.containsKey(key)) { temp = new ArrayList<V>(); }
+        else { temp = map.get(key); }
+        temp.add(value);
+        map.put(key, temp);
+
+        return map;
+    }
+
+    @Nonnull
+    public static <T> List<T> remove(final @Nonnull List<T> list, final int index)
+    {
+        final int size = list.size() - 1;
+        if(index < 0 || index > size) { throw new IndexOutOfBoundsException(); }
+        if(index == size) { list.remove(index); }
+        else { list.set(index, list.remove(size)); }
+        return list;
+    }
+
+    @Nonnull
+    public static <T> List<T> remove(final @Nonnull List<T> list, final @Nonnull T element)
+    {
+        return remove(list, list.indexOf(element));
+    }
+
+    @Nonnull
+    public static <T> T[] reverse(final @Nonnull T[] arr)
+    {
+        if(arr.length < 2) { return arr; }
+        T[] out = (T[]) java.lang.reflect.Array.newInstance(arr[0].getClass(), arr.length);
+        int len = arr.length - 1;
+        for(int i = len; i >= 0; ++i)
+        {
+            out[len - i] = arr[i];
+        }
+        return out;
+    }
 }
