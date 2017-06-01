@@ -371,165 +371,148 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 ---------------------------------------------------------
 
   This Source Code Form is "Incompatible With Secondary Licenses", as
-defined by the Mozilla Public License, v. 2.0.
+defined by the Mozilla Public License, v. 2.0.    
  */
-package com.github.vitrifiedcode.javautilities.string;
+package com.github.vitrifiedcode.javautilities.console;
 
-import com.github.vitrifiedcode.javautilities.object.ObjectUtil;
+import javax.swing.*;
+import java.awt.*;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-import javax.annotation.Nonnull;
-import java.util.regex.Pattern;
-
-@SuppressWarnings("unused")
-public final class StringUtil
+public class TextAreaOutputStream extends OutputStream
 {
-    private StringUtil() {}
 
-    /**
-     * An empty String to reduce RAM usage (Pointers work wonders).
-     */
-    public static final String EMPTY = "";
+    protected byte[] oneByte;     // array for write(int val);
+    protected Appender appender;  // most recent action
 
-    /**
-     * A simple pre-defined null escape character.
-     */
-    public static final char NULL = (char) 0;
-
-    /**
-     * Lots of predefined patterns
-     */
-    public static final Pattern SPACE_SINGLE_PATTERN = StaticPattern.getPattern(" ");
-    public static final Pattern SPACE_PATTERN = StaticPattern.getPattern(" +");
-    public static final Pattern COMMA_SINGLE_PATTERN = StaticPattern.getPattern(",");
-    public static final Pattern COMMA_PATTERN = StaticPattern.getPattern(",+");
-    public static final Pattern COLON_SINGLE_PATTERN = StaticPattern.getPattern(":");
-    public static final Pattern COLON_PATTERN = StaticPattern.getPattern(":+");
-    public static final Pattern SEMICOLON_SINGLE_PATTERN = StaticPattern.getPattern(";");
-    public static final Pattern SEMICOLON_PATTERN = StaticPattern.getPattern(";+");
-    public static final Pattern EQUALS_SINGLE_PATTERN = StaticPattern.getPattern("=");
-    public static final Pattern EQUALS_PATTERN = StaticPattern.getPattern("=+");
-    public static final Pattern NULL_SINGLE_PATTERN = StaticPattern.getPattern("\0");
-    public static final Pattern NULL_PATTERN = StaticPattern.getPattern("\0+");
-    public static final Pattern a_z_SINGLE_PATTERN = StaticPattern.getPattern("[a-z]");
-    public static final Pattern a_z_PATTERN = StaticPattern.getPattern("[a-z]+");
-    public static final Pattern A_Z_SINGLE_PATTERN = StaticPattern.getPattern("[A-Z]");
-    public static final Pattern A_Z_PATTERN = StaticPattern.getPattern("[A-Z]+");
-    public static final Pattern Aa_Zz_SINGLE_PATTERN = StaticPattern.getPattern("[a-zA-Z]+");
-    public static final Pattern Aa_Zz_PATTERN = StaticPattern.getPattern("[a-zA-Z]+");
-    public static final Pattern NUMBERS_SINGLE_PATTERN = StaticPattern.getPattern("[0-9]");
-    public static final Pattern NUMBERS_PATTERN = StaticPattern.getPattern("[0-9]+");
-    public static final Pattern ALPHA_NUMERIC_SINGLE_PATTERN = StaticPattern.getPattern("[a-zA-z0-9]");
-    public static final Pattern ALPHA_NUMERIC_PATTERN = StaticPattern.getPattern("[a-zA-z0-9]+");
-    public static final Pattern NEW_LINE_PATTERN = StaticPattern.getPattern("[\\r\\n]+");
-
-    /**
-     * A way of concatenating Strings with StringBuilder in a smaller {@literal &} more optimized fashion (most people don't set the size)
-     * <p>
-     * Benchmarks:
-     * Benchmark             Mode  Cnt    Score    Error  Units
-     * Size Not Calculated:  avgt   40  350.021 ± 29.974  ns/op
-     * Size Calculated:      avgt   40  200.888 ±  8.381  ns/op
-     *
-     * @param in An array of strings to concatenate
-     * @return The concatenated String
-     */
-    @Nonnull
-    @SafeVarargs
-    public static <T> String build(final @Nonnull T... in)
+    public TextAreaOutputStream(JTextArea txtara, int maxlin)
     {
-        if(in.length == 0) { return ""; }
-        int length = 0;
-        for(T s : in)
+        if(maxlin < 1) { throw new IllegalArgumentException("TextAreaOutputStream maximum lines must be positive (value=" + maxlin + ")"); }
+        oneByte = new byte[1];
+        appender = new Appender(txtara, maxlin);
+    }
+
+    public TextAreaOutputStream(JTextArea textArea) { this(textArea, 1000); }
+
+    /**
+     * Clear the current console text area.
+     */
+    public synchronized void clear()
+    {
+        if(appender != null) { appender.clear(); }
+    }
+
+    public synchronized void close() { appender = null; }
+
+    public synchronized void flush() {}
+
+    public synchronized void write(byte[] ba, int str, int len)
+    {
+        if(appender != null) { appender.append(bytesToString(ba, str, len)); }
+    }
+
+    public synchronized void write(byte[] ba) { write(ba, 0, ba.length); }
+
+    public synchronized void write(int val)
+    {
+        oneByte[0] = (byte) val;
+        write(oneByte, 0, 1);
+    }
+
+    static private String bytesToString(byte[] ba, int str, int len)
+    {
+        try { return new String(ba, str, len, "UTF-8"); } catch(UnsupportedEncodingException thr) { return new String(ba, str, len); } // all JVMs are required to support UTF-8
+    }
+
+    static class Appender implements Runnable
+    {
+        private final JTextArea textArea;
+        private final int maxLines;                                                   // maximum lines allowed in text area
+        private final LinkedList<Integer> lengths;                                                    // length of lines within text area
+        private final List<String> values;                                                     // values waiting to be appended
+
+        private int curLength;                                                  // length of current line
+        private boolean clear;
+        private boolean queue;
+
+        Appender(JTextArea txtara, int maxlin)
         {
-            if(s == null) { return ""; }
-            length += s.toString().length();
+            textArea = txtara;
+            maxLines = maxlin;
+            lengths = new LinkedList<Integer>();
+            values = new ArrayList<String>();
+
+            curLength = 0;
+            clear = false;
+            queue = true;
         }
-        StringBuilder sb = new StringBuilder(length);
-        for(T s : in) { sb.append(s); }
-        return sb.toString();
-    }
 
-    /**
-     * A way of concatenating Strings with StringBuilder in a smaller {@literal &} more optimized fashion (most people don't set the size)
-     *
-     * @param keepEnd Should the end of the string also contain the deliminator.
-     * @param delim   A deliminator between Strings.
-     * @param in      An array of strings to concatenate
-     * @return The concatenated String
-     */
-    @Nonnull
-    @SafeVarargs
-    public static <T> String buildDelim(final boolean keepEnd, final @Nonnull String delim, final @Nonnull T... in)
-    {
-        if(in.length == 0) { return ""; }
-        int length = 0;
-        for(T s : in)
+        synchronized void append(String val)
         {
-            if(s == null) { return ""; }
-            length += s.toString().length();
-        }
-        StringBuilder sb = new StringBuilder(length);
-        for(T s : in) { sb.append(s).append(delim); }
-        String out = sb.toString();
-        if(!keepEnd) { out = out.substring(0, out.length() - delim.length()); }
-        return out;
-    }
-
-    public static boolean equals(final @Nonnull String s0, final @Nonnull String s1)
-    {
-        return ObjectUtil.equals(s0, s1);
-    }
-
-    public static boolean equals(final @Nonnull String[] s0, final @Nonnull String[] s1)
-    {
-        for(String s : s0)
-        {
-            for(String ss : s1)
+            values.add(val);
+            if(queue)
             {
-                if(!ObjectUtil.equals(s, ss)) { return false; }
+                queue = false;
+                EventQueue.invokeLater(this);
             }
         }
 
-        return true;
-    }
-
-    public static boolean equalsIgnoreCase(final @Nonnull String s0, final @Nonnull String s1)
-    {
-        return ObjectUtil.equals(s0.toLowerCase(), s1.toLowerCase());
-    }
-
-    public static boolean containsIgnoreCase(final @Nonnull String in, final @Nonnull String search)
-    {
-        return in.toLowerCase().contains(search.toLowerCase());
-    }
-
-    public static boolean equalsIgnoreCase(final @Nonnull String[] s0, final @Nonnull String[] s1)
-    {
-        String[] s2 = new String[s1.length];
-        for(int i = 0; i < s1.length; ++i) { s2[i] = s1[i].toLowerCase(); }
-
-        for(String s : s0)
+        synchronized void clear()
         {
-            for(String ss : s2)
+            clear = true;
+            curLength = 0;
+            lengths.clear();
+            values.clear();
+            if(queue)
             {
-                if(!ObjectUtil.equals(s.toLowerCase(), ss)) { return false; }
+                queue = false;
+                EventQueue.invokeLater(this);
             }
         }
 
-        return true;
+        // MUST BE THE ONLY METHOD THAT TOUCHES textArea!
+        public synchronized void run()
+        {
+            if(clear) { textArea.setText(""); }
+            for(String val : values)
+            {
+                curLength += val.length();
+                if(val.endsWith(EOL1) || val.endsWith(EOL2))
+                {
+                    if(lengths.size() >= maxLines) { textArea.replaceRange("", 0, lengths.removeFirst()); }
+                    lengths.addLast(curLength);
+                    curLength = 0;
+                }
+                textArea.append(val);
+            }
+            values.clear();
+            clear = false;
+            queue = true;
+        }
+
+        static private final String EOL1 = "\n";
+        static private final String EOL2 = System.getProperty("line.separator", EOL1);
     }
 
-    @Nonnull
-    public static String toString(final @Nonnull String name, final @Nonnull String... data)
+    public static class TextAreaErrorStream extends TextAreaOutputStream
     {
-        if(data.length % 2 != 0) { return ""; }
-        int tmp = data.length / 2;
-        StringBuilder sb = new StringBuilder(4 + (7 * (tmp)) + (tmp - 1) + name.length() + (data[0].length() * 10 * data.length)).append(name).append(" {");
-        for(int i = 0; i < data.length; i += 2)
+
+        public TextAreaErrorStream(JTextArea txtara, int maxlin) { super(txtara, maxlin); }
+
+        public TextAreaErrorStream(JTextArea textArea) { super(textArea); }
+
+        @Override
+        public synchronized void write(byte[] ba, int str, int len)
         {
-            sb.append(" \"").append(data[i]).append("\": \"").append(data[i + 1]).append('\"');
-            if(i != data.length - 2) { sb.append(','); }
+            if(ba.length > 0)
+            {
+//            if(appender != null) { appender.append(Ansi.ansi().fg(Ansi.Color.RED).a(bytesToString(ba, str, len)).reset().toString()); }
+                if(appender != null) { appender.append(bytesToString(ba, str, len)); }
+            }
         }
-        return sb.append(" }").toString();
     }
 }

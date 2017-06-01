@@ -381,7 +381,7 @@ public final class ObjectUtil
 {
     private ObjectUtil() {}
 
-    public static <T> boolean equals(final @Nullable T o0, @Nullable final T o1)
+    public static boolean equals(final @Nullable Object o0, final @Nullable Object o1)
     {
         boolean n0 = o0 == null;
         boolean n1 = o1 == null;
