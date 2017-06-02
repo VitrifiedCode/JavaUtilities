@@ -1,4 +1,4 @@
-package com.github.vitrifiedcode.javautilities.console;
+package com.github.vitrifiedcode.javautilities.console.command;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -6,23 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public abstract class ConsoleCommand<T>
+public abstract class Command<T>
 {
     @Nonnull
     public final String command;
     @Nonnull
     public final String description;
-    @Nullable
     public final ParameterType[] parameterTypes;
 
-    public ConsoleCommand(@Nonnull String command, @Nonnull String description, @Nullable ParameterType... parameterTypes)
+    public Command(@Nonnull String command, @Nonnull String description, @Nullable ParameterType... parameterTypes)
     {
         this.command = command;
         this.description = description;
         this.parameterTypes = parameterTypes;
     }
 
-    public ConsoleCommand(@Nonnull String command, @Nonnull String description, @Nullable String parameters)
+    public Command(@Nonnull String command, @Nonnull String description, @Nullable String parameters)
     {
         this(command, description, parameters == null ? null : identifyParameters(parameters));
     }
@@ -84,11 +83,11 @@ public abstract class ConsoleCommand<T>
         public boolean opened = false;
         public boolean closed;
         @Nullable
-        public ConsoleCommand.MutableParameterType dependency;
+        public Command.MutableParameterType dependency;
 
         public MutableParameterType() {}
 
-        public MutableParameterType(@Nullable String name, boolean required, @Nullable ConsoleCommand.MutableParameterType dependency, boolean closed)
+        public MutableParameterType(@Nullable String name, boolean required, @Nullable Command.MutableParameterType dependency, boolean closed)
         {
             this.name = name == null ? "" : name;
             this.required = required;
@@ -97,7 +96,7 @@ public abstract class ConsoleCommand<T>
             this.dependency = dependency;
         }
 
-        public MutableParameterType(@Nonnull ConsoleCommand.MutableParameterType copy) { this(copy.name, copy.required, copy.dependency, copy.closed); }
+        public MutableParameterType(@Nonnull Command.MutableParameterType copy) { this(copy.name, copy.required, copy.dependency, copy.closed); }
 
         @Override
         public String toString()
@@ -117,18 +116,18 @@ public abstract class ConsoleCommand<T>
         public final String name;
         public final boolean required;
         @Nullable
-        public final ConsoleCommand.ParameterType dependency;
+        public final Command.ParameterType dependency;
 
-        public ParameterType(@Nonnull String name, boolean required, @Nullable ConsoleCommand.ParameterType dependency)
+        public ParameterType(@Nonnull String name, boolean required, @Nullable Command.ParameterType dependency)
         {
             this.name = name;
             this.required = required;
             this.dependency = dependency;
         }
 
-        public ParameterType(@Nonnull ConsoleCommand.ParameterType copy) { this(copy.name, copy.required, copy.dependency); }
+        public ParameterType(@Nonnull Command.ParameterType copy) { this(copy.name, copy.required, copy.dependency); }
 
-        public ParameterType(@Nonnull ConsoleCommand.MutableParameterType copy) { this(copy.name, copy.required, copy.getDependency()); }
+        public ParameterType(@Nonnull Command.MutableParameterType copy) { this(copy.name, copy.required, copy.getDependency()); }
 
         @Override
         public String toString()

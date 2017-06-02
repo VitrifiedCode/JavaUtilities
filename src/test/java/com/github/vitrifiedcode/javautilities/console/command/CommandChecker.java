@@ -373,7 +373,7 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
   This Source Code Form is "Incompatible With Secondary Licenses", as
 defined by the Mozilla Public License, v. 2.0.    
  */
-package com.github.vitrifiedcode.javautilities.console;
+package com.github.vitrifiedcode.javautilities.console.command;
 
 import com.github.vitrifiedcode.javautilities.string.StringUtil;
 
@@ -383,9 +383,9 @@ import java.util.Map;
 
 public class CommandChecker
 {
-    public static final Map<String, ConsoleCommand> COMMANDS = new HashMap<>();
+    public static final Map<String, Command> COMMANDS = new HashMap<>();
 
-    public static void registerCommand(ConsoleCommand c)
+    public static void registerCommand(Command c)
     {
         COMMANDS.put(c.command, c);
     }

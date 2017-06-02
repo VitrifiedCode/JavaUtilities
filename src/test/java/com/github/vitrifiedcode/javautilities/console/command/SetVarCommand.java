@@ -24,14 +24,15 @@ public class SetVarCommand extends Command<Object>
         {
             Class c = Class.forName(loc[0]);
             Field field = ReflectionUtil.getField(c, loc[1]);
+            if(!Modifier.isStatic(field.getModifiers())) { return Result.FALSE; }
             Class<?> type = field.getType();
-            if(!type.isPrimitive()) { return Result.FALSE; }
+            if(!(type.isPrimitive() && !type.isAssignableFrom(String.class))) { return Result.FALSE; }
             if(field.isAnnotationPresent(ConsoleVar.class))
             {
                 boolean b = field.getDeclaredAnnotation(ConsoleVar.class).editable();
-                if(b) { return edit(c, field, parameters[1], b ? 1 : 0); }
+                if(b) { return edit(c, field, parameters[1], type, 1); }
             }
-            else { return edit(c, field, parameters[1], -1); }
+//            else { return edit(c, field, parameters[1], -1); }
         }
         catch(ClassNotFoundException e) { System.out.println("Cannot find class `" + loc[0] + "`."); }
         catch(NoSuchFieldException e) { System.out.println("Cannot find method `" + loc[1] + "`."); }
@@ -44,16 +45,39 @@ public class SetVarCommand extends Command<Object>
 
     }
 
-    private Result<Object> edit(@Nonnull Class c, @Nonnull Field f, @Nonnull String value, int editable)
+    private Result<Object> edit(@Nonnull Class c, @Nonnull Field f, @Nonnull String value, Class<?> type, int editable)
     {
-        if(Modifier.isFinal(f.getModifiers()) && editable == 1)
+        try
         {
-            try
+            if(Modifier.isFinal(f.getModifiers()) && editable == 1) { ReflectionUtil.setFinal(f, false); }
+            if(type.isAssignableFrom(String.class))
             {
-                ReflectionUtil.setFinal(f, false);
+                if(value.startsWith("\"") && value.endsWith("\""))
+                {
+                    f.set(null, value.substring(1, value.length() - 1));
+                    return Result.TRUE;
+                }
             }
-            catch(IllegalAccessException e) { return Result.FALSE; }
+            else
+            {
+                if(type.isAssignableFrom(Number.class))
+                {
+                    if(type.isAssignableFrom(Byte.class)) { f.set(null, Byte.valueOf(value)); }
+                    else if(type.isAssignableFrom(Short.class)) { f.set(null, Short.valueOf(value)); }
+                    else if(type.isAssignableFrom(Integer.class)) { f.set(null, Integer.valueOf(value)); }
+                    else if(type.isAssignableFrom(Long.class)) { f.set(null, Long.valueOf(value)); }
+                    else if(type.isAssignableFrom(Float.class)) { f.set(null, Float.valueOf(value)); }
+                    else if(type.isAssignableFrom(Double.class)) { f.set(null, Double.valueOf(value)); }
+                    else { return Result.FALSE; }
+                }
+                else if(type.isAssignableFrom(Character.class) && value.length() == 1) { f.set(null, value.charAt(0)); }
+                else if(type.isAssignableFrom(Boolean.class) && value.length() == 1) { f.set(null, Boolean.valueOf(value)); }
+                else { return Result.FALSE; }
+                return Result.TRUE;
+            }
+
         }
+        catch(IllegalAccessException e) { return Result.FALSE; }
 
         return Result.FALSE;
     }
